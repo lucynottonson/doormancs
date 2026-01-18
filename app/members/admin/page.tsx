@@ -45,13 +45,20 @@ export default function AdminBroadcast() {
     }
 
     setSending(true);
-    setStatus('...');
+    setStatus('Fetching member data...');
 
     try {
-      const { data: profiles } = await supabase
+      const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
-        .select('id')
+        .select('id, username')
         .eq('profile_completed', true);
+
+      if (profilesError) {
+        console.error('Error fetching profiles:', profilesError);
+        setStatus('Error fetching members');
+        setSending(false);
+        return;
+      }
 
       if (!profiles || profiles.length === 0) {
         setStatus('No members found');
@@ -59,20 +66,28 @@ export default function AdminBroadcast() {
         return;
       }
 
-      const memberEmails: string[] = [];
-      for (const profile of profiles) {
-        const { data: { user } } = await supabase.auth.admin.getUserById(profile.id);
-        if (user?.email) {
-          memberEmails.push(user.email);
-        }
+      console.log(`Found ${profiles.length} profiles`);
+
+      const response = await fetch('/api/get-member-emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profileIds: profiles.map(p => p.id) })
+      });
+
+      const { emails } = await response.json();
+
+      if (!emails || emails.length === 0) {
+        setStatus('No member emails found');
+        setSending(false);
+        return;
       }
 
-      setStatus(`Sending to ${memberEmails.length} members...`);
+      setStatus(`Sending to ${emails.length} members...`);
 
       let successCount = 0;
-      for (const email of memberEmails) {
+      for (const email of emails) {
         try {
-          await fetch('/api/send-email', {
+          const emailResponse = await fetch('/api/send-email', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -90,8 +105,11 @@ export default function AdminBroadcast() {
               `
             })
           });
-          successCount++;
-          setStatus(`Sent ${successCount}/${memberEmails.length}...`);
+
+          if (emailResponse.ok) {
+            successCount++;
+            setStatus(`Sent ${successCount}/${emails.length}...`);
+          }
         } catch (err) {
           console.error(`Failed to send to ${email}:`, err);
         }
@@ -124,7 +142,7 @@ export default function AdminBroadcast() {
     <main style={{ maxWidth: '800px', margin: '0 auto', padding: '40px 20px' }}>
       <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
         <h1>Email All Members</h1>
-        <p style={{ color: '#666' }}>Send an announcement or update to all community members</p>
+        <p style={{ color: '#666' }}>send email to everyone</p>
 
         <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <div>
@@ -154,7 +172,7 @@ export default function AdminBroadcast() {
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="message..."
+              placeholder="Your message..."
               disabled={sending}
               rows={10}
               style={{
@@ -182,7 +200,7 @@ export default function AdminBroadcast() {
               fontWeight: '600'
             }}
           >
-            {sending ? 'Sending...' : 'Send'}
+            {sending ? 'Sending...' : 'Send to All Members'}
           </button>
 
           {status && (
