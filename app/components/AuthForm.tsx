@@ -1,27 +1,21 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from "@/lib/supabase/client";
 import UsernameGenerator from './UsernameGenerator';
 
-export default function AuthForm() {
+interface AuthFormProps {
+  onNewUserSignUp?: () => void;
+  onLogin?: () => void;
+}
+
+export default function AuthForm({ onNewUserSignUp, onLogin }: AuthFormProps) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
-  const [userDisplayName, setUserDisplayName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    async function checkUser() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user?.user_metadata?.display_name) {
-        setUserDisplayName(user.user_metadata.display_name);
-      }
-    }
-    checkUser();
-  }, []);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,30 +23,30 @@ export default function AuthForm() {
     setLoading(true);
     
     if (isSignUp) {
-      // 1. SIGN UP
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: { 
             display_name: username,
-            username: username 
+            username: username,
+            profile_completed: false
           } 
         }
       });
 
       if (authError) {
         setError(authError.message);
-      } else if (authData.user) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert([{ id: authData.user.id, username: username }]);
+        setLoading(false);
+        return;
+      }
 
-        if (profileError) {
-          setError("Profile table failed, but account created: " + profileError.message);
-        } else {
-          setUserDisplayName(username);
-          console.log("Hello, " + username);
+      if (authData.user) {
+        console.log("New user created: " + username);
+        setLoading(false);
+        
+        if (onNewUserSignUp) {
+          onNewUserSignUp();
         }
       }
     } else {
@@ -63,30 +57,25 @@ export default function AuthForm() {
       
       if (loginError) {
         setError(loginError.message);
-      } else if (loginData.user) {
-        setUserDisplayName(loginData.user.user_metadata.display_name);
+        setLoading(false);
+        return;
+      }
+
+      if (loginData.user) {
+        console.log("da user logged in");
+        setLoading(false);
+        
+        if (onLogin) {
+          onLogin();
+        }
       }
     }
-    setLoading(false);
   };
-
-  if (userDisplayName) {
-    return (
-      <div className="auth-card">
-        <h2>Welcome, {userDisplayName}!</h2>
-        <p>You are now logged in.</p>
-        <button onClick={async () => {
-          await supabase.auth.signOut();
-          setUserDisplayName(null);
-        }}>Log Out</button>
-      </div>
-    );
-  }
 
   return (
     <div className="auth-card">
       <form onSubmit={handleAuth} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <h2>{isSignUp ? 'Create Account' : 'Welcome Back'}</h2>
+        <h2>{isSignUp ? 'Create Account' : 'Log In'}</h2>
         
         <input 
           type="email" 
@@ -101,16 +90,17 @@ export default function AuthForm() {
           value={password} 
           onChange={(e) => setPassword(e.target.value)} 
           required 
+          minLength={6}
         />
 
         {isSignUp && (
           <div style={{ border: '1px dashed #ccc', padding: '10px', borderRadius: '8px' }}>
             <UsernameGenerator onGenerate={setUsername} />
-            <p>Selected: <strong>{username}</strong></p>
+            <p>Selected: <strong>{username || 'None'}</strong></p>
           </div>
         )}
 
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading || (isSignUp && !username)}>
           {loading ? 'Processing...' : (isSignUp ? 'Sign Up' : 'Log In')}
         </button>
 
@@ -118,7 +108,10 @@ export default function AuthForm() {
         
         <button 
           type="button" 
-          onClick={() => setIsSignUp(!isSignUp)}
+          onClick={() => {
+            setIsSignUp(!isSignUp);
+            setError(null);
+          }}
           style={{ background: 'none', border: 'none', color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
         >
           {isSignUp ? 'Already have an account? Log in' : 'Need an account? Sign up'}
