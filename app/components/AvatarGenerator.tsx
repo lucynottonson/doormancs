@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { supabase } from "@/lib/supabase/client";
+import AvatarBackgroundGenerator from './AvatarBackgroundGenerator';
 
 interface AvatarParts {
   neck: string;
@@ -27,10 +28,11 @@ export default function AvatarGenerator({ onAvatarGenerated }: AvatarGeneratorPr
   };
 
   const [currentParts, setCurrentParts] = useState<AvatarParts | null>(null);
-
   const [avatarDataUrl, setAvatarDataUrl] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [checkingAvailability, setCheckingAvailability] = useState(false);
+  const [backgroundCanvas, setBackgroundCanvas] = useState<HTMLCanvasElement | null>(null);
+  const [showBackgroundGenerator, setShowBackgroundGenerator] = useState(true);
 
   const isAvatarTaken = async (parts: AvatarParts): Promise<boolean> => {
     const combinationString = JSON.stringify(parts);
@@ -51,6 +53,7 @@ export default function AvatarGenerator({ onAvatarGenerated }: AvatarGeneratorPr
 
   const generateRandomAvatar = async () => {
     setCheckingAvailability(true);
+    setShowBackgroundGenerator(true);
     let attempts = 0;
     const maxAttempts = 50;
 
@@ -78,6 +81,11 @@ export default function AvatarGenerator({ onAvatarGenerated }: AvatarGeneratorPr
     alert('Something is wrong. Try again.');
   };
 
+  const handleBackgroundGenerated = (canvas: HTMLCanvasElement) => {
+    setBackgroundCanvas(canvas);
+    setShowBackgroundGenerator(false);
+  };
+
   const drawAvatar = async () => {
     if (!currentParts) return;
     
@@ -91,13 +99,17 @@ export default function AvatarGenerator({ onAvatarGenerated }: AvatarGeneratorPr
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    if (backgroundCanvas) {
+      ctx.drawImage(backgroundCanvas, 0, 0, canvas.width, canvas.height);
+    }
+
     const layers = [
       { part: currentParts.neck, folder: 'necks' },
       { part: currentParts.head, folder: 'heads' },
       { part: currentParts.eyes, folder: 'eyes' },
       { part: currentParts.mouth, folder: 'mouths' },
       { part: currentParts.horns, folder: 'horns' }
-    ]; // this order is for layering. if you change the order they will not layer correctly and also thats the order for the url in supabase so dont change it
+    ];
 
     try {
       for (const layer of layers) {
@@ -115,7 +127,7 @@ export default function AvatarGenerator({ onAvatarGenerated }: AvatarGeneratorPr
             resolve(null);
           };
           img.onerror = (e) => {
-            console.error(`Failed to load: ${imagePath}`, e);
+            console.error(`FAILED TO MAKE: ${imagePath}`, e);
             resolve(null);
           };
           img.src = imagePath;
@@ -139,10 +151,10 @@ export default function AvatarGenerator({ onAvatarGenerated }: AvatarGeneratorPr
   };
 
   useEffect(() => {
-    if (currentParts) {
+    if (currentParts && backgroundCanvas) {
       drawAvatar();
     }
-  }, [currentParts]);
+  }, [currentParts, backgroundCanvas]);
 
   useEffect(() => {
     generateRandomAvatar();
@@ -155,7 +167,7 @@ export default function AvatarGenerator({ onAvatarGenerated }: AvatarGeneratorPr
       gap: '20px',
       alignItems: 'center'
     }}>
-      <h3 style={{ margin: 0 }}>Make Avatar</h3>
+      <h3 style={{ margin: 0 }}>Actualize Your Identity</h3>
       
       <canvas 
         ref={canvasRef} 
@@ -178,7 +190,7 @@ export default function AvatarGenerator({ onAvatarGenerated }: AvatarGeneratorPr
       }}>
         {loading || checkingAvailability ? (
           <p style={{ color: '#666' }}>
-            {checkingAvailability ? 'Finding unique avatar...' : 'Loading...'}
+            {checkingAvailability ? 'Making ur little character' : '...'}
           </p>
         ) : avatarDataUrl ? (
           <img 
@@ -214,7 +226,7 @@ export default function AvatarGenerator({ onAvatarGenerated }: AvatarGeneratorPr
           opacity: checkingAvailability || loading ? 0.6 : 1
         }}
       >
-        {checkingAvailability ? 'Generating your little character...' : 'SHUFFLE'}
+        {checkingAvailability ? 'Finding unique avatar...' : 'SHUFFLE'}
       </button>
 
       <p style={{ 
@@ -224,8 +236,16 @@ export default function AvatarGenerator({ onAvatarGenerated }: AvatarGeneratorPr
         margin: 0,
         fontStyle: 'italic'
       }}>
-        The avatar you generate is unique to you. No one else can have the same avatar. You can also not change your avatar after you choose it. So think wisely. There are endless possibilities.... (there are almost 9 million combinations)
+        Each avatar is unique. You cannot change it after you finalize so choose carefully. It is not that serious. You will learn to accept the avatar and username you chose. There are almost 9 million possible avatar combinations. 
       </p>
+
+      {showBackgroundGenerator && currentParts && (
+        <AvatarBackgroundGenerator
+          seed={JSON.stringify(currentParts)}
+          onGenerated={handleBackgroundGenerated}
+          size={512}
+        />
+      )}
     </div>
   );
 }

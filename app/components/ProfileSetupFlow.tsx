@@ -15,10 +15,9 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
   const [avatarParts, setAvatarParts] = useState<any>(null);
   
   // Profile form states
-  const [bio, setBio] = useState('');
-  const [location, setLocation] = useState('');
-  const [website, setWebsite] = useState('');
-  const [interests, setInterests] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastInitial, setLastInitial] = useState('');
+  const [birthday, setBirthday] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -70,6 +69,12 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (lastInitial && lastInitial.length !== 1) {
+      setError("Last initial must be exactly 1 letter");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -89,7 +94,7 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
       console.log('Current user:', user);
       
       if (!user) {
-        setError("This fucking error again. there is problem if you see this");
+        setError("Session error. Please try logging in again.");
         setLoading(false);
         return;
       }
@@ -100,7 +105,7 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
         avatarUrl = await uploadAvatar(user.id);
         if (!avatarUrl) {
           console.error('Avatar upload failed');
-          setError("Avatar upload failed, less bad error than that fucking other error");
+          setError("Avatar upload failed, but continuing...");
         } else {
           console.log('Avatar uploaded:', avatarUrl);
         }
@@ -110,19 +115,19 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
       const { error: updateError } = await supabase
         .from('profiles')
         .update({
-          bio,
-          location,
-          website,
-          interests,
+          first_name: firstName,
+          last_initial: lastInitial.toUpperCase(),
+          birthday: birthday || null,
           avatar_url: avatarUrl,
           avatar_combination: avatarParts ? JSON.stringify(avatarParts) : null,
-          profile_completed: true,
+              background_seed: avatarParts ? JSON.stringify(avatarParts) : null, 
+              profile_completed: true,
           updated_at: new Date().toISOString()
         })
         .eq('id', user.id);
 
       if (updateError) {
-        console.error('BIG PROBLEM', updateError);
+        console.error('Profile update error:', updateError);
         setError(updateError.message);
       } else {
         console.log('Updating user metadata...');
@@ -133,13 +138,13 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
           }
         });
 
-        console.log("You DID IT!");
+        console.log("Profile completed!");
         if (onComplete) {
           onComplete();
         }
       }
     } catch (err) {
-      setError("something wrong");
+      setError("Something wrong");
       console.error('Profile submit error:', err);
     }
     
@@ -215,12 +220,11 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
         {error && <p style={{ color: 'red', fontSize: '0.9rem', marginTop: '15px', textAlign: 'center' }}>{error}</p>}
 
         <div style={{ display: 'flex', gap: '10px', marginTop: '25px' }}>
-          
           <button 
             type="button"
             onClick={handleAvatarNext}
             style={{ 
-              flex: 2,
+              flex: 1,
               padding: '12px',
               backgroundColor: '#007bff',
               color: 'white',
@@ -231,7 +235,7 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
               fontSize: '16px'
             }}
           >
-            Next: give me your personal info→
+            Next: Give me ur personal information →
           </button>
         </div>
       </div>
@@ -312,21 +316,62 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
 
       <form onSubmit={handleProfileSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
         <div>
-          <label htmlFor="bio" style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
-            Bio
+          <label htmlFor="firstName" style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
+            First Name
           </label>
-          <textarea
-            id="bio"
-            placeholder="I only have bio right now. also none of this is real and if you make an account during this process I will delete in in supabase anyway."
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            rows={4}
+          <input
+            id="firstName"
+            type="text"
+            placeholder="Enter your first name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
             style={{ 
               width: '100%', 
               padding: '10px', 
               borderRadius: '6px', 
               border: '1px solid #ccc',
-              resize: 'vertical',
+              fontSize: '14px'
+            }}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="lastInitial" style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
+            Last Initial (1 letter only)
+          </label>
+          <input
+            id="lastInitial"
+            type="text"
+            placeholder="X"
+            value={lastInitial}
+            onChange={(e) => setLastInitial(e.target.value.slice(0, 1).toUpperCase())}
+            maxLength={1}
+            style={{ 
+              width: '60px', 
+              padding: '10px', 
+              borderRadius: '6px', 
+              border: '1px solid #ccc',
+              fontSize: '14px',
+              textAlign: 'center',
+              textTransform: 'uppercase'
+            }}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="birthday" style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
+            Birthday
+          </label>
+          <input
+            id="birthday"
+            type="date"
+            value={birthday}
+            onChange={(e) => setBirthday(e.target.value)}
+            style={{ 
+              width: '100%', 
+              padding: '10px', 
+              borderRadius: '6px', 
+              border: '1px solid #ccc',
               fontSize: '14px'
             }}
           />
@@ -370,7 +415,7 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
               opacity: loading ? 0.6 : 1
             }}
           >
-            {loading ? 'Saving...' : '✓ Complete Profile'}
+            {loading ? 'Saving...' : 'Complete Profile'}
           </button>
         </div>
       </form>

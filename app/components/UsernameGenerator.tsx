@@ -31,7 +31,7 @@ export default function UsernameGenerator({ onGenerate }: Props) {
 
   return (
     <div className="flex flex-col gap-2 max-w-sm">
-      <p>Suggested: <strong>{username || (loading ? "Generating..." : "—")}</strong></p>
+      <p>CURRENT USERNAME: <strong>{username || (loading ? "Generating..." : "—")}</strong></p>
 
       <div className="flex gap-2">
         <button
@@ -42,6 +42,9 @@ export default function UsernameGenerator({ onGenerate }: Props) {
         >
           {loading ? "..." : "NEW ONE"}
         </button>
+        <p>
+          you cannot change your username later. everyone gets a unique username and there are currently about 2.6 million possible combinations. I will add more words at one point and then there will be more.  
+        </p>
       </div>
 
       {error && <p className="text-red-600 text-sm">{error}</p>}

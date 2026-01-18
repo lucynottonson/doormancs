@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from "@/lib/supabase/client";
+import { useRouter } from 'next/navigation';
 import AuthForm from '../components/AuthForm';
 import ProfileSetupFlow from '../components/ProfileSetupFlow';
-import { useRouter } from 'next/navigation';
- 
+
 export default function AuthPage() {
-  const router = useRouter();
   const [currentView, setCurrentView] = useState<'auth' | 'profile' | 'main'>('auth');
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     checkUserStatus();
@@ -47,7 +47,7 @@ export default function AuthPage() {
       console.log('Profile completed:', profileCompleted);
       
       if (profileCompleted) {
-        setCurrentView('main');
+        router.push('/');
       } else {
         setCurrentView('profile');
       }
@@ -65,18 +65,13 @@ export default function AuthPage() {
   };
 
   const handleLogin = () => {
-    console.log('User logged in, checking status');
-    checkUserStatus();
+    console.log('User logged in, redirecting to home');
+    router.push('/');
   };
 
   const handleProfileComplete = () => {
-    console.log('Profile completed, showing main view');
-    setCurrentView('main');
-  };
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    setCurrentView('auth');
+    console.log('Profile completed, redirecting to home');
+    router.push('/');
   };
 
   if (loading) {
@@ -88,7 +83,7 @@ export default function AuthPage() {
         minHeight: '100vh',
         backgroundColor: '#f5f5f5' 
       }}>
-        <div>HOLD ON.........</div>
+        <div>WAIT......</div>
       </main>
     );
   }
@@ -111,35 +106,6 @@ export default function AuthPage() {
 
         {currentView === 'profile' && (
           <ProfileSetupFlow onComplete={handleProfileComplete} />
-        )}
-
-        {currentView === 'main' && (
-          <div style={{ 
-            backgroundColor: 'white', 
-            padding: '30px', 
-            borderRadius: '8px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-          }}>
-            <h1>Thank. You exist on website.</h1>
-            <p>Your profile is complete and you're all set.</p>
-
-            <div style={{ marginTop: '20px' }}>
-              <button
-                onClick={() => router.push('/')}
-                style={{
-                  padding: '10px 20px',
-                  backgroundColor: '#007bff',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontWeight: 600
-                }}
-              >
-                Go to Home
-              </button>
-            </div>
-          </div>
         )}
       </div>
     </main>

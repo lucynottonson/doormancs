@@ -52,3 +52,5 @@ filter.js
 words.js
 
 /tools
+
+lib/config.ts

@@ -96,7 +96,6 @@ export default function AuthForm({ onNewUserSignUp, onLogin }: AuthFormProps) {
         {isSignUp && (
           <div style={{ border: '1px dashed #ccc', padding: '10px', borderRadius: '8px' }}>
             <UsernameGenerator onGenerate={setUsername} />
-            <p>Selected: <strong>{username || 'None'}</strong></p>
           </div>
         )}
 
