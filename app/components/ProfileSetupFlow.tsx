@@ -15,7 +15,6 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
   const [avatarPreview, setAvatarPreview] = useState<string>('');
   const [avatarParts, setAvatarParts] = useState<any>(null);
   
-  // Profile form states
   const [firstName, setFirstName] = useState('');
   const [lastInitial, setLastInitial] = useState('');
   const [birthday, setBirthday] = useState('');
@@ -113,19 +112,20 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
       }
 
       console.log('Updating profile...');
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({
-          first_name: firstName,
-          last_initial: lastInitial.toUpperCase(),
-          birthday: birthday || null,
-          avatar_url: avatarUrl,
-          avatar_combination: avatarParts ? JSON.stringify(avatarParts) : null,
-              background_seed: avatarParts ? JSON.stringify(avatarParts) : null, 
-              profile_completed: true,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user.id);
+   const { error: updateError } = await supabase
+  .from('profiles')
+  .update({
+    first_name: firstName,
+    last_initial: lastInitial.toUpperCase(),
+    birthday: birthday || null,
+    avatar_url: avatarUrl,
+    avatar_combination: avatarParts ? JSON.stringify(avatarParts) : null,
+    background_seed: avatarParts ? JSON.stringify(avatarParts) : null,
+    email: user.email, // Add this line
+    profile_completed: true,
+    updated_at: new Date().toISOString()
+  })
+  .eq('id', user.id);
 
       if (updateError) {
         console.error('Profile update error:', updateError);

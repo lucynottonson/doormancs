@@ -1,37 +1,35 @@
+'use server';
+
 import { createClient } from '@supabase/supabase-js';
-import { NextResponse } from 'next/server';
 
-export const runtime = 'edge';
-
-export async function POST(request: Request) {
+export async function getMemberEmails(profileIds: string[]) {
   try {
-    const { profileIds } = await request.json();
-    
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !serviceKey) {
-      return NextResponse.json({ 
-        error: 'Missing configuration',
-        emails: []
+      console.error('Missing env vars:', { 
+        hasUrl: !!supabaseUrl, 
+        hasKey: !!serviceKey 
       });
+      return { 
+        success: false, 
+        error: 'Server configuration error',
+        emails: [] 
+      };
     }
 
-    const supabaseAdmin = createClient(supabaseUrl, serviceKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false
-      }
-    });
+    const supabaseAdmin = createClient(supabaseUrl, serviceKey);
 
     const { data, error } = await supabaseAdmin.auth.admin.listUsers();
 
     if (error) {
       console.error('Supabase error:', error);
-      return NextResponse.json({ 
-        error: `Supabase error: ${error.message}`,
-        emails: []
-      });
+      return { 
+        success: false, 
+        error: error.message,
+        emails: [] 
+      };
     }
 
     const users = data.users || [];
@@ -39,20 +37,24 @@ export async function POST(request: Request) {
       .filter(user => profileIds.includes(user.id) && user.email)
       .map(user => user.email!);
 
-    return NextResponse.json({ 
+    console.log('Found emails:', emails.length);
+
+    return { 
+      success: true, 
       emails,
       debug: {
         totalUsers: users.length,
         profileIdsReceived: profileIds.length,
         emailsFound: emails.length
       }
-    });
+    };
 
   } catch (error) {
     console.error('Exception:', error);
-    return NextResponse.json({ 
+    return { 
+      success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
-      emails: []
-    });
+      emails: [] 
+    };
   }
 }
