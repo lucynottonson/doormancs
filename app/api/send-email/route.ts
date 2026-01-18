@@ -1,8 +1,7 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
-import { config } from '../../../lib/config'; 
 
-const resend = new Resend(config.resendApiKey);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   const { to, subject, html } = await request.json();
