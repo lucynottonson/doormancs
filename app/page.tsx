@@ -173,7 +173,7 @@ export default function Home() {
             border: '2px dashed #ccc',
             textAlign: 'center'
           }}>
-            <h2 style={{ marginTop: 0 }}>🔒 Members-Only Area</h2>
+            <h2 style={{ marginTop: 0 }}>u need account</h2>
             <p style={{ color: '#666', marginBottom: '20px' }}>
               Sign in to access exclusive content
             </p>
