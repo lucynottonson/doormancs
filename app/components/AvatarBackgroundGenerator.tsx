@@ -66,8 +66,7 @@ export default function AvatarBackgroundGenerator({
         }
 
         setTimeout(() => {
-          const canvas = p.canvas as HTMLCanvasElement;
-          onGenerated(canvas);
+const canvas = (p as any).canvas as HTMLCanvasElement;          onGenerated(canvas);
         }, 100);
       };
 
