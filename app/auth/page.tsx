@@ -1,13 +1,12 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
-
-
 import { useState, useEffect } from 'react';
 import { supabase } from "@/lib/supabase/client";
 import { useRouter } from 'next/navigation';
-import AuthForm from '../components/AuthForm';
-import ProfileSetupFlow from '../components/ProfileSetupFlow';
+import dynamic from 'next/dynamic';
+
+const AuthForm = dynamic(() => import('../components/AuthForm'), { ssr: false });
+const ProfileSetupFlow = dynamic(() => import('../components/ProfileSetupFlow'), { ssr: false });
 
 export default function AuthPage() {
   const [currentView, setCurrentView] = useState<'auth' | 'profile' | 'main'>('auth');
