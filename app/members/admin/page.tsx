@@ -38,93 +38,110 @@ export default function AdminBroadcast() {
     setLoading(false);
   };
 
-  const sendToAllMembers = async () => {
-    if (!subject || !message) {
-      alert(' fill in both subject and message');
+const sendToAllMembers = async () => {
+  if (!subject || !message) {
+    alert('Please fill in both subject and message');
+    return;
+  }
+
+  setSending(true);
+  setStatus('Fetching member data...');
+
+  try {
+    const { data: profiles, error: profilesError } = await supabase
+      .from('profiles')
+      .select('id, username')
+      .eq('profile_completed', true);
+
+    console.log('Profiles query result:', profiles, profilesError);
+
+    if (profilesError) {
+      console.error('Error fetching profiles:', profilesError);
+      setStatus('Error fetching members: ' + profilesError.message);
+      setSending(false);
       return;
     }
 
-    setSending(true);
-    setStatus('Fetching member data...');
-
-    try {
-      const { data: profiles, error: profilesError } = await supabase
-        .from('profiles')
-        .select('id, username')
-        .eq('profile_completed', true);
-
-      if (profilesError) {
-        console.error('Error fetching profiles:', profilesError);
-        setStatus('Error fetching members');
-        setSending(false);
-        return;
-      }
-
-      if (!profiles || profiles.length === 0) {
-        setStatus('No members found');
-        setSending(false);
-        return;
-      }
-
-      console.log(`Found ${profiles.length} profiles`);
-
-      const response = await fetch('/api/get-member-emails', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ profileIds: profiles.map(p => p.id) })
-      });
-
-      const { emails } = await response.json();
-
-      if (!emails || emails.length === 0) {
-        setStatus('No member emails found');
-        setSending(false);
-        return;
-      }
-
-      setStatus(`Sending to ${emails.length} members...`);
-
-      let successCount = 0;
-      for (const email of emails) {
-        try {
-          const emailResponse = await fetch('/api/send-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              to: email,
-              subject: subject,
-              html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                  <h2>${subject}</h2>
-                  <div style="white-space: pre-wrap;">${message}</div>
-                  <br><br>
-                  <p style="color: #666; font-size: 14px;">
-                    This email was sent to all members of Doorman Cognitive Sovereignty
-                  </p>
-                </div>
-              `
-            })
-          });
-
-          if (emailResponse.ok) {
-            successCount++;
-            setStatus(`Sent ${successCount}/${emails.length}...`);
-          }
-        } catch (err) {
-          console.error(`Failed to send to ${email}:`, err);
-        }
-      }
-
-      setStatus(`Successfully sent ${successCount} emails`);
-      setSubject('');
-      setMessage('');
-    } catch (error) {
-      console.error('Error:', error);
-      setStatus('Error sending emails');
+    if (!profiles || profiles.length === 0) {
+      setStatus('No completed profiles found in database');
+      setSending(false);
+      return;
     }
 
-    setSending(false);
-  };
+    console.log(`Found ${profiles.length} profiles:`, profiles);
+    setStatus(`Found ${profiles.length} profiles, fetching emails...`);
+
+    // Get emails from API
+    const response = await fetch('/api/get-member-emails', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ profileIds: profiles.map(p => p.id) })
+    });
+
+    console.log('API response status:', response.status);
+    const data = await response.json();
+    console.log('API response data:', data);
+
+    if (!response.ok) {
+      setStatus(`API Error: ${data.error || 'Unknown error'}`);
+      setSending(false);
+      return;
+    }
+
+    const { emails } = data;
+
+    if (!emails || emails.length === 0) {
+      setStatus(`No member emails found. API returned: ${JSON.stringify(data)}`);
+      setSending(false);
+      return;
+    }
+
+    console.log(`Got ${emails.length} emails:`, emails);
+    setStatus(`Sending to ${emails.length} members...`);
+
+    let successCount = 0;
+    for (const email of emails) {
+      try {
+        const emailResponse = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: email,
+            subject: subject,
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2>${subject}</h2>
+                <div style="white-space: pre-wrap;">${message}</div>
+                <br><br>
+                <p style="color: #666; font-size: 14px;">
+                  This email was sent to all members of Doorman Cognitive Sovereignty
+                </p>
+              </div>
+            `
+          })
+        });
+
+        if (emailResponse.ok) {
+          successCount++;
+          setStatus(`Sent ${successCount}/${emails.length}...`);
+        } else {
+          console.error('Failed to send to', email, await emailResponse.text());
+        }
+      } catch (err) {
+        console.error(`Failed to send to ${email}:`, err);
+      }
+    }
+
+    setStatus(` Successfully sent ${successCount} emails!`);
+    setSubject('');
+    setMessage('');
+  } catch (error) {
+    console.error('Error:', error);
+    setStatus(' Error: ' + (error instanceof Error ? error.message : 'Unknown error'));
+  }
+
+  setSending(false);
+};
 
   if (loading) {
     return (
