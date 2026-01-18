@@ -1,5 +1,8 @@
 "use client";
 
+export const dynamic = 'force-dynamic';
+
+
 import { useEffect, useRef } from 'react';
 import p5 from 'p5';
 
