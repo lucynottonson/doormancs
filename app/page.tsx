@@ -52,101 +52,165 @@ export default function Home() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
-      <nav style={{
-        backgroundColor: 'white',
-        padding: '15px 30px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}>
-        <Link href="/" style={{ textDecoration: 'none', color: 'black' }}>
-          <h1 style={{ margin: 0, fontSize: '1.5rem' }}>Doorman Cognitive Sovereignty</h1>
-        </Link>
-        
-        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-          {loading ? (
-            <span>...</span>
-          ) : user ? (
-<Link href="/members/dashboard" style={{ textDecoration: 'none', display: 'flex', gap: '10px', alignItems: 'center' }}>              {profile?.avatar_url ? (
-                <img
-                  src={profile.avatar_url}
-                  alt="Avatar"
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: '50%',
-                    objectFit: 'cover',
-                    border: '1px solid #ddd'
-                  }}
-                />
-              ) : (
-                <div style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: '50%',
-                  backgroundColor: '#e9ecef',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#6c757d',
-                  fontWeight: 700
-                }}>
-                  {(profile?.first_name || profile?.username || user.email || '').charAt(0).toUpperCase()}
-                </div>
-              )}
-              <span style={{ color: '#666', fontWeight: '500' }}>
-                {profile?.first_name || profile?.username || user.email}
-              </span>
-            </Link>
-          ) : (
-            <Link
-              href="/auth"
-              style={{
-                padding: '8px 20px',
-                backgroundColor: '#007bff',
-                color: 'white',
-                textDecoration: 'none',
-                borderRadius: '6px',
-                fontWeight: '500'
-              }}
-            >
-              Sign In
-            </Link>
-          )}
-        </div>
-      </nav>
+    <>
+      <div className="bg-blobs">
+        <div className="blob blob-1"></div>
+        <div className="blob blob-2"></div>
+        <div className="blob blob-3"></div>
+        <div className="blob blob-4"></div>
+        <div className="blob blob-5"></div>
+      </div>
 
-      <main style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: '60px 20px'
-      }}>
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '60px'
-        }}>
-          <h1 style={{ fontSize: '3.5rem', margin: '0 0 20px 0' }}>
-            Welcome to Doorman Cognitive Sovereignty
+      <div className="container">
+        <header>
+          <Link href="/" className="brand-logo">
+            Doorman Cognitive Sovereignty
+          </Link>
+          
+          <nav className="nav">
+            <Link href="#" className="nav-link">Manifesto</Link>
+            <Link href="#" className="nav-link">Articles</Link>
+            <Link href="#" className="nav-link">About</Link>
+            
+            {loading ? (
+              <div className="spinner spinner-sm"></div>
+            ) : user ? (
+              <Link href="/members/dashboard" className="btn btn-primary" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                {profile?.avatar_url ? (
+                  <img
+                    src={profile.avatar_url}
+                    alt="Avatar"
+                    className="avatar avatar-sm"
+                  />
+                ) : (
+                  <div className="avatar avatar-sm" style={{
+                    backgroundColor: '#e9ecef',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#6c757d',
+                    fontWeight: 700
+                  }}>
+                    {(profile?.first_name || profile?.username || user.email || '').charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <span>
+                  {profile?.first_name || profile?.username || 'Dashboard'}
+                </span>
+              </Link>
+            ) : (
+              <Link href="/auth" className="btn btn-primary">
+                Sign In
+              </Link>
+            )}
+          </nav>
+        </header>
+
+        <section className="section section-center">
+          <h1 className="heading-xl">
+            Heading
           </h1>
-          <p style={{ fontSize: '1.3rem', color: '#666', margin: '0 0 40px 0' }}>
-            This website is under construction
-          </p>
+          <div className="content-box text-lead">
+            subheader
+          </div>
+        </section>
+
+        <div className="grid">
+          <div className="card card-color-1">
+            <div className="badge">01</div>
+            <h3 className="heading-md">Thing 1</h3>
+          </div>
+
+          <div className="card card-color-2">
+            <div className="badge">02</div>
+            <h3 className="heading-md">Thing 2</h3>
+          </div>
+
+          <div className="card card-color-3">
+            <div className="badge">03</div>
+            <h3 className="heading-md">Thing 3</h3>
+          </div>
+
+          <div className="card card-color-4">
+            <div className="badge">04</div>
+            <h3 className="heading-md">Thing 4</h3>
+          </div>
+
+          <div className="card card-color-5">
+            <div className="badge">05</div>
+            <h3 className="heading-md">Thing 5</h3>
+          </div>
+
+          <div className="card card-color-6">
+            <div className="badge">06</div>
+            <h3 className="heading-md">Thing 6</h3>
+          </div>
         </div>
 
-        <section style={{
-          backgroundColor: 'white',
-          padding: '40px',
-          borderRadius: '12px',
-          marginBottom: '40px',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}>
-          <h2 style={{ marginTop: 0 }}>About This Site</h2>
-          <p>This is the public homepage. Everyone sees the same thing here.</p>
-          <p>u have to sign in to see more stuff.</p>
+        <section className="section-featured mb-xl">
+          <h2 className="heading-lg text-center">more things</h2>
+          <div className="flex-wrap">
+            <div className="btn-pill">thing</div>
+            <div className="btn-pill">thing</div>
+            <div className="btn-pill">thing</div>
+            <div className="btn-pill">thing</div>
+            <div className="btn-pill">thing</div>
+            <div className="btn-pill">thing</div>
+            <div className="btn-pill">thing</div>
+            <div className="btn-pill">thing</div>
+
+          </div>
         </section>
-      </main>
-    </div>
+
+        <section className="section mb-xl">
+          <div className="grid-2">
+            <div className="card card-color-1">
+              <h3 className="heading-md">No number thing</h3>
+            </div>
+
+            <div className="card card-color-3">
+              <h3 className="heading-md">No number thing</h3>
+            </div>
+          </div>
+        </section>
+
+        <section className="section mb-xl">
+          <h2 className="heading-lg text-center mb-md">Other thing</h2>
+          
+          <div className="accordion">
+            <button className="accordion-header">
+              1
+              <span>+</span>
+            </button>
+            <div className="accordion-content">
+            </div>
+          </div>
+
+           <div className="accordion">
+            <button className="accordion-header">
+              1
+              <span>+</span>
+            </button>
+            <div className="accordion-content">
+            </div>
+          </div>
+
+           <div className="accordion">
+            <button className="accordion-header">
+              1
+              <span>+</span>
+            </button>
+            <div className="accordion-content">
+            </div>
+          </div>
+        </section>
+
+        <footer>
+          <div className="footer-content">
+            <p className="mt-sm">This site is under active development. More resources and tools coming soon.</p>
+          </div>
+        </footer>
+      </div>
+    </>
   );
 }

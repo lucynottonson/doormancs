@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
-
 import { useState, useRef, useEffect } from 'react';
 import { supabase } from "@/lib/supabase/client";
 import AvatarBackgroundGenerator from './AvatarBackgroundGenerator';

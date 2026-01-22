@@ -121,7 +121,7 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
     avatar_url: avatarUrl,
     avatar_combination: avatarParts ? JSON.stringify(avatarParts) : null,
     background_seed: avatarParts ? JSON.stringify(avatarParts) : null,
-    email: user.email, // Add this line
+    email: user.email,
     profile_completed: true,
     updated_at: new Date().toISOString()
   })
