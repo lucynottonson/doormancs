@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useState } from 'react';
 import { supabase } from "@/lib/supabase/client";
 import AvatarGenerator from './AvatarGenerator';
@@ -112,20 +111,20 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
       }
 
       console.log('Updating profile...');
-   const { error: updateError } = await supabase
-  .from('profiles')
-  .update({
-    first_name: firstName,
-    last_initial: lastInitial.toUpperCase(),
-    birthday: birthday || null,
-    avatar_url: avatarUrl,
-    avatar_combination: avatarParts ? JSON.stringify(avatarParts) : null,
-    background_seed: avatarParts ? JSON.stringify(avatarParts) : null,
-    email: user.email,
-    profile_completed: true,
-    updated_at: new Date().toISOString()
-  })
-  .eq('id', user.id);
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({
+          first_name: firstName,
+          last_initial: lastInitial.toUpperCase(),
+          birthday: birthday || null,
+          avatar_url: avatarUrl,
+          avatar_combination: avatarParts ? JSON.stringify(avatarParts) : null,
+          background_seed: avatarParts ? JSON.stringify(avatarParts) : null,
+          email: user.email,
+          profile_completed: true,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user.id);
 
       if (updateError) {
         console.error('Profile update error:', updateError);
@@ -180,61 +179,31 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
 
   if (step === 'avatar') {
     return (
-      <div style={{ 
-        maxWidth: '600px', 
-        margin: '0 auto', 
-        padding: '30px',
-        border: '1px solid #ddd',
-        borderRadius: '12px',
-        backgroundColor: 'white'
-      }}>
-        <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-          <h2 style={{ margin: 0 }}>Step 1 of 2</h2>
-          <p style={{ color: '#666', marginTop: '5px' }}>Create Avatar</p>
-        </div>
+      <div className="container-narrow">
+        <div className="card card-color-2">
+          <div className="section-center mb-lg">
+            <h2 className="heading-lg">Step 1 of 2</h2>
+            <p className="text-secondary">Create Avatar</p>
+          </div>
 
-        <div style={{ 
-          width: '100%', 
-          height: '6px', 
-          backgroundColor: '#e0e0e0', 
-          borderRadius: '3px',
-          marginBottom: '30px',
-          overflow: 'hidden'
-        }}>
-          <div style={{ 
-            width: '50%', 
-            height: '100%', 
-            backgroundColor: '#007bff',
-            transition: 'width 0.3s'
-          }} />
-        </div>
+          <div className="progress-bar mb-xl">
+            <div className="progress-fill" style={{ width: '50%' }} />
+          </div>
 
-        <div style={{ 
-          border: '2px dashed #ddd', 
-          padding: '20px', 
-          borderRadius: '8px',
-          backgroundColor: '#fafafa'
-        }}>
-          <AvatarGenerator onAvatarGenerated={handleAvatarGenerated} />
-        </div>
+          <div className="content-box mb-lg">
+            <AvatarGenerator onAvatarGenerated={handleAvatarGenerated} />
+          </div>
 
-        {error && <p style={{ color: 'red', fontSize: '0.9rem', marginTop: '15px', textAlign: 'center' }}>{error}</p>}
+          {error && (
+            <div className="alert alert-error mb-lg">
+              {error}
+            </div>
+          )}
 
-        <div style={{ display: 'flex', gap: '10px', marginTop: '25px' }}>
           <button 
             type="button"
             onClick={handleAvatarNext}
-            style={{ 
-              flex: 1,
-              padding: '12px',
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontWeight: '500',
-              fontSize: '16px'
-            }}
+            className="btn btn-primary"
           >
             Next: Give me ur personal information →
           </button>
@@ -244,182 +213,106 @@ export default function ProfileSetupFlow({ onComplete }: ProfileSetupFlowProps) 
   }
 
   return (
-    <div style={{ 
-      maxWidth: '600px', 
-      margin: '0 auto', 
-      padding: '30px',
-      border: '1px solid #ddd',
-      borderRadius: '12px',
-      backgroundColor: 'white'
-    }}>
-      <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-        <h2 style={{ margin: 0 }}>Step 2 of 2</h2>
-        <p style={{ color: '#666', marginTop: '5px' }}>Complete Your Profile</p>
-      </div>
+    <div className="container-narrow">
+      <div className="card card-color-2">
+        <div className="section-center mb-lg">
+          <h2 className="heading-lg">Step 2 of 2</h2>
+          <p className="text-secondary">Complete Your Profile</p>
+        </div>
 
-      <div style={{ 
-        width: '100%', 
-        height: '6px', 
-        backgroundColor: '#e0e0e0', 
-        borderRadius: '3px',
-        marginBottom: '20px',
-        overflow: 'hidden'
-      }}>
-        <div style={{ 
-          width: '100%', 
-          height: '100%', 
-          backgroundColor: '#007bff',
-          transition: 'width 0.3s'
-        }} />
-      </div>
+        <div className="progress-bar mb-xl">
+          <div className="progress-fill" style={{ width: '100%' }} />
+        </div>
 
-      {avatarPreview && (
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '15px',
-          marginBottom: '20px',
-          padding: '15px',
-          backgroundColor: '#f8f9fa',
-          borderRadius: '8px'
-        }}>
-          <img 
-            src={avatarPreview} 
-            alt="Your avatar" 
-            style={{ 
-              width: '60px', 
-              height: '60px', 
-              borderRadius: '8px',
-              border: '2px solid #ddd'
-            }}
-          />
-          <div>
-            <p style={{ margin: 0, fontWeight: '500' }}>Your Avatar</p>
-            <button
+        {avatarPreview && (
+          <div className="content-box mb-lg">
+            <div className="section-center">
+              <img 
+                src={avatarPreview} 
+                alt="Your avatar" 
+                className="avatar avatar-xl mb-md"
+              />
+              <p className="mb-sm">Your Avatar</p>
+              <button
+                type="button"
+                onClick={() => setStep('avatar')}
+                className="btn-pill"
+              >
+                ← Change Avatar
+              </button>
+            </div>
+          </div>
+        )}
+
+        <form onSubmit={handleProfileSubmit}>
+          <div className="form-group">
+            <label htmlFor="firstName" className="form-label">
+              First Name
+            </label>
+            <input
+              id="firstName"
+              type="text"
+              placeholder="Enter your first name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="lastInitial" className="form-label">
+              Last Initial (1 letter only)
+            </label>
+            <input
+              id="lastInitial"
+              type="text"
+              placeholder="X"
+              value={lastInitial}
+              onChange={(e) => setLastInitial(e.target.value.slice(0, 1).toUpperCase())}
+              maxLength={1}
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="birthday" className="form-label">
+              Birthday
+            </label>
+            <input
+              id="birthday"
+              type="date"
+              value={birthday}
+              onChange={(e) => setBirthday(e.target.value)}
+              className="form-input"
+            />
+          </div>
+
+          {error && (
+            <div className="alert alert-error mb-lg">
+              {error}
+            </div>
+          )}
+
+          <div className="section-center mt-xl">
+            <button 
               type="button"
               onClick={() => setStep('avatar')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#007bff',
-                textDecoration: 'underline',
-                cursor: 'pointer',
-                padding: 0,
-                fontSize: '14px',
-                marginTop: '3px'
-              }}
+              disabled={loading}
+              className="btn-pill mb-md"
             >
-              ← Change Avatar
+              ← Back
+            </button>
+
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="btn btn-primary"
+            >
+              {loading ? 'Saving...' : 'Complete Profile'}
             </button>
           </div>
-        </div>
-      )}
-
-      <form onSubmit={handleProfileSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        <div>
-          <label htmlFor="firstName" style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
-            First Name
-          </label>
-          <input
-            id="firstName"
-            type="text"
-            placeholder="Enter your first name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
-              borderRadius: '6px', 
-              border: '1px solid #ccc',
-              fontSize: '14px'
-            }}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="lastInitial" style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
-            Last Initial (1 letter only)
-          </label>
-          <input
-            id="lastInitial"
-            type="text"
-            placeholder="X"
-            value={lastInitial}
-            onChange={(e) => setLastInitial(e.target.value.slice(0, 1).toUpperCase())}
-            maxLength={1}
-            style={{ 
-              width: '60px', 
-              padding: '10px', 
-              borderRadius: '6px', 
-              border: '1px solid #ccc',
-              fontSize: '14px',
-              textAlign: 'center',
-              textTransform: 'uppercase'
-            }}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="birthday" style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
-            Birthday
-          </label>
-          <input
-            id="birthday"
-            type="date"
-            value={birthday}
-            onChange={(e) => setBirthday(e.target.value)}
-            style={{ 
-              width: '100%', 
-              padding: '10px', 
-              borderRadius: '6px', 
-              border: '1px solid #ccc',
-              fontSize: '14px'
-            }}
-          />
-        </div>
-
-        {error && <p style={{ color: 'red', fontSize: '0.9rem' }}>{error}</p>}
-
-        <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-          <button 
-            type="button"
-            onClick={() => setStep('avatar')}
-            disabled={loading}
-            style={{ 
-              flex: 1,
-              padding: '12px',
-              backgroundColor: '#6c757d',
-              color: 'white',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              fontWeight: '500',
-              fontSize: '16px'
-            }}
-          >
-            ← Back
-          </button>
-
-          <button 
-            type="submit" 
-            disabled={loading}
-            style={{ 
-              flex: 2,
-              padding: '12px',
-              backgroundColor: '#28a745',
-              color: 'white',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              fontWeight: '500',
-              fontSize: '16px',
-              opacity: loading ? 0.6 : 1
-            }}
-          >
-            {loading ? 'Saving...' : 'Complete Profile'}
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

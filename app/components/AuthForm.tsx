@@ -73,48 +73,69 @@ export default function AuthForm({ onNewUserSignUp, onLogin }: AuthFormProps) {
   };
 
   return (
-    <div className="auth-card">
-      <form onSubmit={handleAuth} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <h2>{isSignUp ? 'Create Account' : 'Log In'}</h2>
+    <div className="card card-color-2">
+      <form onSubmit={handleAuth}>
+        <h2 className="heading-md text-center mb-md">
+          {isSignUp ? 'Create Account' : 'Log In'}
+        </h2>
         
-        <input 
-          type="email" 
-          placeholder="Email"
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-          required 
-        />
-        <input 
-          type="password" 
-          placeholder="Password"
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required 
-          minLength={6}
-        />
+        <div className="form-group">
+          <label className="form-label">Email</label>
+          <input 
+            type="email" 
+            className="form-input"
+            placeholder="Enter your email"
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            required 
+          />
+        </div>
 
-        {isSignUp && (
-          <div style={{ border: '1px dashed #ccc', padding: '10px', borderRadius: '8px' }}>
+        <div className="form-group">
+          <label className="form-label">Password</label>
+          <input 
+            type="password" 
+            className="form-input"
+            placeholder="Enter your password"
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
+            minLength={6}
+          />
+        </div>
+
+                {isSignUp && (
+          <div className="content-box mb-md">
             <UsernameGenerator onGenerate={setUsername} />
           </div>
         )}
 
-        <button type="submit" disabled={loading || (isSignUp && !username)}>
+        <button 
+          type="submit" 
+          className="btn btn-primary mb-lg"
+          disabled={loading || (isSignUp && !username)}
+        >
           {loading ? 'Processing...' : (isSignUp ? 'Sign Up' : 'Log In')}
         </button>
 
-        {error && <p style={{ color: 'red', fontSize: '0.8rem' }}>{error}</p>}
+        {error && (
+          <div className="alert alert-error mb-lg">
+            {error}
+          </div>
+        )}
         
-        <button 
-          type="button" 
-          onClick={() => {
-            setIsSignUp(!isSignUp);
-            setError(null);
-          }}
-          style={{ background: 'none', border: 'none', color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
-        >
-          {isSignUp ? 'Already have an account? Log in' : 'Need an account? Sign up'}
-        </button>
+        <div className="section-center">
+          <button 
+            type="button" 
+            onClick={() => {
+              setIsSignUp(!isSignUp);
+              setError(null);
+            }}
+            className="btn-pill"
+          >
+            {isSignUp ? 'Already have an account? Log in' : 'Need an account? Sign up'}
+          </button>
+        </div>
       </form>
     </div>
   );

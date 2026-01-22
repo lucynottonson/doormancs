@@ -78,38 +78,24 @@ export default function AuthPage() {
 
   if (loading) {
     return (
-      <main style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        minHeight: '100vh',
-        backgroundColor: '#f5f5f5' 
-      }}>
-        <div>WAIT......</div>
-      </main>
+      <div className="container section-center">
+        <div className="spinner"></div>
+      </div>
     );
   }
 
   return (
-    <main style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      minHeight: '100vh',
-      backgroundColor: '#f5f5f5' 
-    }}>
-      <div style={{ width: '100%', maxWidth: '500px', padding: '20px' }}>
-        {currentView === 'auth' && (
-          <AuthForm 
-            onNewUserSignUp={handleNewUserSignUp}
-            onLogin={handleLogin}
-          />
-        )}
+    <div className="container-narrow">
+      {currentView === 'auth' && (
+        <AuthForm 
+          onNewUserSignUp={handleNewUserSignUp}
+          onLogin={handleLogin}
+        />
+      )}
 
-        {currentView === 'profile' && (
-          <ProfileSetupFlow onComplete={handleProfileComplete} />
-        )}
-      </div>
-    </main>
+      {currentView === 'profile' && (
+        <ProfileSetupFlow onComplete={handleProfileComplete} />
+      )}
+    </div>
   );
 }

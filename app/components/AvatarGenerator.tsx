@@ -161,50 +161,29 @@ export default function AvatarGenerator({ onAvatarGenerated }: AvatarGeneratorPr
   }, []);
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      gap: '20px',
-      alignItems: 'center'
-    }}>
-      <h3 style={{ margin: 0 }}>Actualize Your Identity</h3>
+    <div className="section-center">
+      <h3 className="heading-md mb-md">Actualize Your Identity</h3>
       
       <canvas 
         ref={canvasRef} 
         width={512} 
         height={512}
-        style={{ display: 'none' }}
+        className="sr-only"
       />
 
-      <div style={{ 
-        width: '250px', 
-        height: '250px', 
-        border: '3px solid #ddd',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        backgroundColor: 'transparent',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-      }}>
+      <div className="avatar-preview-container mb-md">
         {loading || checkingAvailability ? (
-          <p style={{ color: '#666' }}>
+          <p className="text-secondary">
             {checkingAvailability ? 'Making ur little character' : '...'}
           </p>
         ) : avatarDataUrl ? (
           <img 
             src={avatarDataUrl} 
             alt="preview" 
-            style={{ 
-              width: '100%', 
-              height: '100%', 
-              objectFit: 'contain',
-              imageRendering: 'crisp-edges'
-            }}
+            className="avatar-preview-image"
           />
         ) : (
-          <p style={{ color: '#666' }}>Generating...</p>
+          <p className="text-secondary">Generating...</p>
         )}
       </div>
 
@@ -212,30 +191,12 @@ export default function AvatarGenerator({ onAvatarGenerated }: AvatarGeneratorPr
         onClick={generateRandomAvatar}
         type="button"
         disabled={checkingAvailability || loading}
-        style={{
-          padding: '12px 40px',
-          backgroundColor: checkingAvailability || loading ? '#6c757d' : '#28a745',
-          color: 'white',
-          border: 'none',
-          borderRadius: '8px',
-          cursor: checkingAvailability || loading ? 'not-allowed' : 'pointer',
-          fontSize: '16px',
-          fontWeight: '600',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-          transition: 'all 0.2s',
-          opacity: checkingAvailability || loading ? 0.6 : 1
-        }}
+        className="btn btn-primary mb-md"
       >
         {checkingAvailability ? 'Finding unique avatar...' : 'SHUFFLE'}
       </button>
 
-      <p style={{ 
-        fontSize: '13px', 
-        color: '#666', 
-        textAlign: 'center',
-        margin: 0,
-        fontStyle: 'italic'
-      }}>
+      <p className="avatar-disclaimer">
         Each avatar is unique. You cannot change it after you finalize so choose carefully. It is not that serious. You will learn to accept the avatar and username you chose. There are almost 9 million possible avatar combinations. 
       </p>
 

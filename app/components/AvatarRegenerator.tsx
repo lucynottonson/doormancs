@@ -154,68 +154,35 @@ export default function AvatarRegenerator({
   }, []);
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      gap: '20px',
-      alignItems: 'center',
-      padding: '20px',
-      backgroundColor: '#f8f9fa',
-      borderRadius: '12px'
-    }}>
-      <h3 style={{ margin: 0 }}>Shuffle Background</h3>
+    <div className="content-box section-center">
+      <h3 className="heading-md mb-md">Shuffle Background</h3>
       
       <canvas 
         ref={canvasRef} 
         width={512} 
         height={512}
-        style={{ display: 'none' }}
+        className="sr-only"
       />
 
-      <div style={{ 
-        width: '200px', 
-        height: '200px', 
-        border: '3px solid #ddd',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        backgroundColor: 'transparent',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-      }}>
+      <div className="avatar-preview-container mb-md">
         {loading ? (
-          <p style={{ color: '#666' }}>...</p>
+          <p className="text-secondary">...</p>
         ) : avatarDataUrl ? (
           <img 
             src={avatarDataUrl} 
             alt="Avatar preview" 
-            style={{ 
-              width: '100%', 
-              height: '100%', 
-              objectFit: 'contain'
-            }}
+            className="avatar-preview-image"
           />
         ) : (
-          <p style={{ color: '#666' }}>Generating...</p>
+          <p className="text-secondary">Generating...</p>
         )}
       </div>
 
-      <div style={{ display: 'flex', gap: '10px' }}>
+      <div className="flex-wrap mb-md">
         <button
           onClick={shuffleBackground}
           disabled={loading || uploading}
-          style={{
-            padding: '10px 25px',
-            backgroundColor: '#28a745',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: loading || uploading ? 'not-allowed' : 'pointer',
-            fontSize: '14px',
-            fontWeight: '600',
-            opacity: loading || uploading ? 0.6 : 1
-          }}
+          className="btn btn-primary"
         >
           SHUFFLE
         </button>
@@ -223,23 +190,13 @@ export default function AvatarRegenerator({
         <button
           onClick={uploadNewAvatar}
           disabled={loading || uploading || !avatarDataUrl}
-          style={{
-            padding: '10px 25px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: loading || uploading || !avatarDataUrl ? 'not-allowed' : 'pointer',
-            fontSize: '14px',
-            fontWeight: '600',
-            opacity: loading || uploading || !avatarDataUrl ? 0.6 : 1
-          }}
+          className="btn btn-primary"
         >
           {uploading ? 'Saving...' : '✓ Save New Background'}
         </button>
       </div>
 
-      <p style={{ fontSize: '12px', color: '#666', margin: 0, textAlign: 'center' }}>
+      <p className="text-secondary mb-sm">
         Your avatar parts stay the same, only the background changes!
       </p>
 

@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from "@/lib/supabase/client";
 import { useRouter } from 'next/navigation';
-import MembersNav from '../components/MembersNav';
 import "./global.css";
 
 export default function MembersLayout({
@@ -49,7 +48,6 @@ export default function MembersLayout({
 
 return (
   <div>
-    <MembersNav />
     {children}
   </div>
 );

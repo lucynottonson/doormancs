@@ -53,58 +53,8 @@ export default function Home() {
 
   return (
     <>
-      <div className="bg-blobs">
-        <div className="blob blob-1"></div>
-        <div className="blob blob-2"></div>
-        <div className="blob blob-3"></div>
-        <div className="blob blob-4"></div>
-        <div className="blob blob-5"></div>
-      </div>
-
       <div className="container">
-        <header>
-          <Link href="/" className="brand-logo">
-            Doorman Cognitive Sovereignty
-          </Link>
-          
-          <nav className="nav">
-            <Link href="#" className="nav-link">Manifesto</Link>
-            <Link href="#" className="nav-link">Articles</Link>
-            <Link href="#" className="nav-link">About</Link>
-            
-            {loading ? (
-              <div className="spinner spinner-sm"></div>
-            ) : user ? (
-              <Link href="/members/dashboard" className="btn btn-primary" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                {profile?.avatar_url ? (
-                  <img
-                    src={profile.avatar_url}
-                    alt="Avatar"
-                    className="avatar avatar-sm"
-                  />
-                ) : (
-                  <div className="avatar avatar-sm" style={{
-                    backgroundColor: '#e9ecef',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#6c757d',
-                    fontWeight: 700
-                  }}>
-                    {(profile?.first_name || profile?.username || user.email || '').charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <span>
-                  {profile?.first_name || profile?.username || 'Dashboard'}
-                </span>
-              </Link>
-            ) : (
-              <Link href="/auth" className="btn btn-primary">
-                Sign In
-              </Link>
-            )}
-          </nav>
-        </header>
+ 
 
         <section className="section section-center">
           <h1 className="heading-xl">

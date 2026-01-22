@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useEffect, useRef } from 'react';
 import p5 from 'p5';
 
@@ -9,6 +8,7 @@ interface AvatarBackgroundGeneratorProps {
   onGenerated: (canvas: HTMLCanvasElement) => void;
   size?: number;
 }
+
 // I WILL CHANGE BACKGROUND OPTIONS LATER THIS IS JUST PLACEHOLDER AND I THINK THESE ARE UGGO
 function hashCode(str: string): number {
   let hash = 0;
@@ -67,7 +67,8 @@ export default function AvatarBackgroundGenerator({
         }
 
         setTimeout(() => {
-const canvas = (p as any).canvas as HTMLCanvasElement;          onGenerated(canvas);
+          const canvas = (p as any).canvas as HTMLCanvasElement;
+          onGenerated(canvas);
         }, 100);
       };
 
@@ -183,11 +184,7 @@ const canvas = (p as any).canvas as HTMLCanvasElement;          onGenerated(canv
   return (
     <div 
       ref={containerRef} 
-      style={{ 
-        position: 'absolute', 
-        left: '-9999px',
-        visibility: 'hidden'
-      }}
+      className="sr-only"
     />
   );
 }
