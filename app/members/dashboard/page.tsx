@@ -20,79 +20,75 @@ export default function Dashboard() {
         .select('*')
         .eq('id', session.user.id)
         .single();
-
+      
       if (data) {
         setProfile(data);
       }
     }
-    
     setLoading(false);
   };
 
   if (loading) {
     return (
-      <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
-        <div>.....</div>
-      </main>
+      <>
+        <div className="bg-blobs">
+          <div className="blob blob-1"></div>
+          <div className="blob blob-2"></div>
+          <div className="blob blob-3"></div>
+          <div className="blob blob-4"></div>
+          <div className="blob blob-5"></div>
+        </div>
+        
+        <main className="container">
+          <div className="spinner"></div>
+        </main>
+      </>
     );
   }
 
   return (
-    <main style={{
-      maxWidth: '1200px',
-      margin: '0 auto',
-      padding: '40px 20px'
-    }}>
-      <div style={{
-        backgroundColor: 'white',
-        padding: '30px',
-        borderRadius: '12px',
-        marginBottom: '30px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-      }}>
-        <h1 style={{ margin: '0 0 10px 0' }}>
-          Welcome back {profile?.first_name || profile?.username || 'friend'}!
-        </h1>
-        <p style={{ color: '#666', margin: 0 }}>
-          This is where ur shit is gonna be when I make it
-        </p>
+    <>
+      <div className="bg-blobs">
+        <div className="blob blob-1"></div>
+        <div className="blob blob-2"></div>
+        <div className="blob blob-3"></div>
+        <div className="blob blob-4"></div>
+        <div className="blob blob-5"></div>
       </div>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gap: '20px'
-      }}>
-        <div style={{
-          backgroundColor: 'white',
-          padding: '25px',
-          borderRadius: '12px',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}>
-          <h3 style={{ marginTop: 0, color: '#007bff' }}>something else</h3>
-          <p>information about something else </p>
+      <main className="container">
+        <div className="card card-color-1 mb-md" style={{ minHeight: 'auto' }}>
+          <h1 className="heading-lg" style={{ margin: '0 0 10px 0' }}>
+            Welcome back {profile?.first_name || profile?.username || 'friend'}!
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
+            This is where ur shit is gonna be when I make it
+          </p>
         </div>
 
-        <div style={{
-          backgroundColor: 'white',
-          padding: '25px',
-          borderRadius: '12px',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}>
-          <h3 style={{ marginTop: 0, color: '#28a745' }}>more</h3>
-          <p>Another thing</p>
-        </div>
+        <div className="grid">
+          <div className="card card-color-2" style={{ minHeight: 'auto' }}>
+            <h3 className="heading-md" style={{ marginTop: 0, color: 'var(--accent-secondary)' }}>
+              something else
+            </h3>
+            <p>information about something else</p>
+          </div>
 
-        <div style={{
-          backgroundColor: 'white',
-          padding: '25px',
-          borderRadius: '12px',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}>
-          <h3 style={{ marginTop: 0, color: '#ffc107' }}>other thing again</h3>
-          <p>more thing</p>
+          <div className="card card-color-3" style={{ minHeight: 'auto' }}>
+            <h3 className="heading-md" style={{ marginTop: 0, color: 'var(--color-5)' }}>
+              more
+            </h3>
+            <p>Another thing</p>
+          </div>
+
+          <div className="card card-color-4" style={{ minHeight: 'auto' }}>
+            <h3 className="heading-md" style={{ marginTop: 0, color: 'var(--accent-primary)' }}>
+              other thing again
+            </h3>
+            <p>more thing</p>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }

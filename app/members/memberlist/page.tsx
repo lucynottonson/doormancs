@@ -46,114 +46,113 @@ export default function MemberList() {
 
   if (loading) {
     return (
-      <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
-        <div>....</div>
-      </main>
+      <>
+        <div className="bg-blobs">
+          <div className="blob blob-1"></div>
+          <div className="blob blob-2"></div>
+          <div className="blob blob-3"></div>
+          <div className="blob blob-4"></div>
+          <div className="blob blob-5"></div>
+        </div>
+        
+        <main className="container">
+          <div className="spinner"></div>
+        </main>
+      </>
     );
   }
 
   return (
-    <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
-      <div style={{
-        backgroundColor: 'white',
-        padding: '30px',
-        borderRadius: '12px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-        marginBottom: '30px'
-      }}>
-        <h1 style={{ marginTop: 0 }}>All Members</h1>
-        <p style={{ color: '#666' }}>
-          {members.length} {members.length === 1 ? 'member' : 'members'} so far
-        </p>
+    <>
+      <div className="bg-blobs">
+        <div className="blob blob-1"></div>
+        <div className="blob blob-2"></div>
+        <div className="blob blob-3"></div>
+        <div className="blob blob-4"></div>
+        <div className="blob blob-5"></div>
       </div>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-        gap: '20px'
-      }}>
-        {members.map((member) => (
-          <div
-            key={member.id}
-            style={{
-              backgroundColor: 'white',
-              padding: '20px',
-              borderRadius: '12px',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-              textAlign: 'center',
-              border: member.id === currentUser?.id ? '2px solid #007bff' : '1px solid #ddd'
-            }}
-          >
-            {member.avatar_url ? (
-              <img
-                src={member.avatar_url}
-                alt={member.username}
-                style={{
-                  width: '100px',
-                  height: '100px',
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                  border: '3px solid #ddd',
-                  marginBottom: '15px'
-                }}
-              />
-            ) : (
-              <div style={{
-                width: '100px',
-                height: '100px',
-                borderRadius: '50%',
-                backgroundColor: '#e9ecef',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 15px',
-                fontSize: '2rem',
-                color: '#6c757d',
-                fontWeight: 700
-              }}>
-                {member.username.charAt(0).toUpperCase()}
-              </div>
-            )}
-            
-            <h3 style={{ margin: '0 0 5px 0', fontSize: '1.2rem' }}>
-              {member.username}
-            </h3>
-            
-            {member.age !== null && (
-              <p style={{ color: '#666', margin: '5px 0', fontSize: '0.9rem' }}>
-                Age: {member.age}
-              </p>
-            )}
-            
-            {member.id === currentUser?.id && (
-              <span style={{
-                display: 'inline-block',
-                marginTop: '10px',
-                padding: '4px 12px',
-                backgroundColor: '#007bff',
-                color: 'white',
-                borderRadius: '12px',
-                fontSize: '0.8rem',
-                fontWeight: '500'
-              }}>
-                YOU!!!
-              </span>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {members.length === 0 && (
-        <div style={{
-          backgroundColor: 'white',
-          padding: '60px 30px',
-          borderRadius: '12px',
-          textAlign: 'center',
-          color: '#666'
-        }}>
-          <p>No members yet.</p>
+      <main className="container">
+        <div className="card card-color-1 mb-md" style={{ minHeight: 'auto' }}>
+          <h1 className="heading-lg" style={{ marginTop: 0 }}>All Members</h1>
+          <p style={{ color: 'var(--text-secondary)' }}>
+            {members.length} {members.length === 1 ? 'member' : 'members'} so far
+          </p>
         </div>
-      )}
-    </main>
+
+        <div className="grid">
+          {members.map((member, index) => {
+            const cardColors = ['card-color-2', 'card-color-3', 'card-color-4', 'card-color-5', 'card-color-6'];
+            const colorClass = cardColors[index % cardColors.length];
+            
+            return (
+              <div
+                key={member.id}
+                className={`card ${colorClass}`}
+                style={{
+                  textAlign: 'center',
+                  minHeight: 'auto',
+                  border: member.id === currentUser?.id ? '3px solid var(--accent-primary)' : 'none'
+                }}
+              >
+                {member.avatar_url ? (
+                  <img
+                    src={member.avatar_url}
+                    alt={member.username}
+                    className="avatar avatar-lg"
+                    style={{ margin: '0 auto 15px' }}
+                  />
+                ) : (
+                  <div className="avatar avatar-lg" style={{
+                    backgroundColor: '#e9ecef',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 15px',
+                    fontSize: '2rem',
+                    color: '#6c757d',
+                    fontWeight: 700
+                  }}>
+                    {member.username.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                
+                <h3 className="heading-md" style={{ margin: '0 0 5px 0' }}>
+                  {member.username}
+                </h3>
+                
+                {member.age !== null && (
+                  <p style={{ color: 'var(--text-secondary)', margin: '5px 0', fontSize: '0.9rem' }}>
+                    Age: {member.age}
+                  </p>
+                )}
+                
+                {member.id === currentUser?.id && (
+                  <span className="badge" style={{
+                    position: 'static',
+                    display: 'inline-block',
+                    marginTop: '10px',
+                    backgroundColor: 'var(--accent-primary)',
+                    transform: 'rotate(0deg)'
+                  }}>
+                    YOU!!!
+                  </span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {members.length === 0 && (
+          <div className="card card-color-2" style={{
+            textAlign: 'center',
+            padding: '60px 30px',
+            minHeight: 'auto'
+          }}>
+            <p style={{ color: 'var(--text-secondary)' }}>No members yet.</p>
+          </div>
+        )}
+      </main>
+    </>
   );
 }

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from "@/lib/supabase/client";
 import { useRouter } from 'next/navigation';
 import MembersNav from '../components/MembersNav';
+import "./global.css";
 
 export default function MembersLayout({
   children,
@@ -38,24 +39,18 @@ export default function MembersLayout({
     setLoading(false);
   };
 
-  if (loading) {
-    return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        backgroundColor: '#f5f5f5'
-      }}>
-        Loading...
-      </div>
-    );
-  }
-
+ if (loading) {
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
-      <MembersNav />
-      {children}
+    <div>
+      Loading...
     </div>
   );
 }
+
+return (
+  <div>
+    <MembersNav />
+    {children}
+  </div>
+);
+  }

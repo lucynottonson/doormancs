@@ -10,17 +10,17 @@ export default function MembersNav() {
   const [profile, setProfile] = useState<any>(null);
   const router = useRouter();
   const pathname = usePathname();
-const [showAdminLink, setShowAdminLink] = useState(false);
+  const [showAdminLink, setShowAdminLink] = useState(false);
 
-useEffect(() => {
-  const checkAdmin = async () => {
-    const hasAccess = await isAdmin();
-    setShowAdminLink(hasAccess);
-  };
-  
-  loadProfile();
-  checkAdmin();
-}, []);
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const hasAccess = await isAdmin();
+      setShowAdminLink(hasAccess);
+    };
+    
+    loadProfile();
+    checkAdmin();
+  }, []);
 
   const loadProfile = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -40,65 +40,52 @@ useEffect(() => {
     router.push('/');
   };
 
-  const isActive = (path: string) => pathname === path;
-
   return (
-    <nav style={{
-      backgroundColor: 'white',
-      padding: '15px 30px',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    }}>
+    <header>
       <div style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
-        <Link href="/" style={{ textDecoration: 'none', color: 'black' }}>
-          <h1 style={{ margin: 0, fontSize: '1.5rem', cursor: 'pointer' }}>DCS</h1>
+        <Link href="/" className="brand-logo">
+          DCS
         </Link>
-        <div style={{ display: 'flex', gap: '20px' }}>
-         <Link 
-  href="/members/dashboard" 
-  style={{ 
-    textDecoration: 'none', 
-    color: pathname?.startsWith('/members/dashboard') ? '#007bff' : '#666', 
-    fontWeight: '500' 
-  }}
->
-  Dashboard
-</Link>
+        <nav className="nav">
+          <Link 
+            href="/members/dashboard" 
+            className="nav-link"
+            style={{ 
+              color: pathname?.startsWith('/members/dashboard') ? 'var(--accent-secondary)' : 'var(--text-primary)'
+            }}
+          >
+            Dashboard
+          </Link>
           <Link 
             href="/members/journal" 
+            className="nav-link"
             style={{ 
-              textDecoration: 'none', 
-              color: pathname?.startsWith('/members/journal') ? '#007bff' : '#666', 
-              fontWeight: '500' 
+              color: pathname?.startsWith('/members/journal') ? 'var(--accent-secondary)' : 'var(--text-primary)'
             }}
           >
             Journal
           </Link>
           <Link 
             href="/members/memberlist" 
+            className="nav-link"
             style={{ 
-              textDecoration: 'none', 
-              color: pathname?.startsWith('/members/memberlist') ? '#007bff' : '#666', 
-              fontWeight: '500' 
+              color: pathname?.startsWith('/members/memberlist') ? 'var(--accent-secondary)' : 'var(--text-primary)'
             }}
           >
             Members
           </Link>
           {showAdminLink && (
-  <Link 
-    href="/members/admin" 
-    style={{ 
-      textDecoration: 'none', 
-      color: pathname?.startsWith('/members/admin') ? '#dc3545' : '#666', 
-      fontWeight: '500' 
-    }}
-  >
-    Admin
-  </Link>
-)}
-        </div>
+            <Link 
+              href="/members/admin" 
+              className="nav-link"
+              style={{ 
+                color: pathname?.startsWith('/members/admin') ? 'var(--accent-primary)' : 'var(--text-primary)'
+              }}
+            >
+              Admin
+            </Link>
+          )}
+        </nav>
       </div>
       
       <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
@@ -112,9 +99,9 @@ useEffect(() => {
             padding: '5px 10px',
             borderRadius: '8px',
             transition: 'background-color 0.2s',
-            backgroundColor: pathname?.startsWith('/members/profile') ? '#f0f0f0' : 'transparent'
+            backgroundColor: pathname?.startsWith('/members/profile') ? 'rgba(255, 255, 255, 0.1)' : 'transparent'
           }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
           onMouseLeave={(e) => {
             if (!pathname?.startsWith('/members/profile')) {
               e.currentTarget.style.backgroundColor = 'transparent';
@@ -125,50 +112,36 @@ useEffect(() => {
             <img 
               src={profile.avatar_url} 
               alt="Avatar"
-              style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                objectFit: 'cover',
-                border: '2px solid #ddd'
-              }}
+              className="avatar avatar-sm"
             />
           ) : (
-            <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
+            <div className="avatar avatar-sm" style={{
               backgroundColor: '#e9ecef',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#6c757d',
-              fontWeight: 700,
-              border: '2px solid #ddd'
+              fontWeight: 700
             }}>
               {(profile?.first_name || profile?.username || '').charAt(0).toUpperCase()}
             </div>
           )}
-          <span style={{ color: '#666', fontWeight: '500' }}>
+          <span style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
             {profile?.first_name || profile?.username}
           </span>
         </Link>
 
         <button
           onClick={handleSignOut}
+          className="btn btn-primary"
           style={{
-            padding: '8px 20px',
-            backgroundColor: '#dc3545',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontWeight: '500'
+            backgroundColor: 'var(--accent-primary)',
+            color: 'var(--bg-dark)'
           }}
         >
           Sign Out
         </button>
       </div>
-    </nav>
+    </header>
   );
 }
