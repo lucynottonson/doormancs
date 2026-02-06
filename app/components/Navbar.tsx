@@ -69,13 +69,13 @@ export default function UnifiedNav() {
       
       <nav className="nav">
         {/* Public links */}
-        <Link href="#" className="nav-link">
+        <Link href="/manifesto" className="nav-link">
           Manifesto
         </Link>
         <Link href="#" className="nav-link">
           Articles
         </Link>
-        <Link href="#" className="nav-link">
+        <Link href="/about" className="nav-link">
           About
         </Link>
 

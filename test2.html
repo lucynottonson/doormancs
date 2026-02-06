@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCSBUTTONS *_*</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background:  #0f0f23;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 60px;
+            max-width: 1800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .button-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            position: relative;
+        }
+
+        .button {
+            border: none;
+            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            user-select: none;
+            cursor: pointer;
+            transition: all 0.08s cubic-bezier(0.2, 0, 0.38, 0.9);
+            will-change: transform, box-shadow;
+            font-family: 'Inter', sans-serif;
+            
+            width: 200px;
+            height: 75px;
+            border-radius: 26px;
+            font-size: 22px;
+            font-weight: 800;
+            color: rgb(255, 255, 255);
+        }
+
+        .button-2 {
+            background: linear-gradient(22deg, rgb(25, 85, 120), rgb(35, 75, 110));
+            box-shadow: 
+                rgba(0, 0, 0, 0) 8px 10px 15px 1px, 
+                rgba(0, 0, 0, 0.54) -11px -13px 38px 1px inset,
+                rgba(13, 43, 60, 0.6) 0px 8px 0px 0px;
+            filter: brightness(110%) contrast(102%) saturate(200%);
+        }
+
+        .button-2:hover {
+            transform: translateY(4px);
+            box-shadow: 
+                rgba(0, 0, 0, 0.1) 6px 7px 12px 1px, 
+                rgba(0, 0, 0, 0.48) -9px -10px 30px 1px inset,
+                rgba(13, 43, 60, 0.7) 0px 4px 0px 0px;
+            filter: brightness(105%) contrast(102%) saturate(200%);
+        }
+
+        .button-2:active {
+            transform: translateY(6px);
+            box-shadow: 
+                rgba(0, 0, 0, 0.2) 4px 4px 8px 0px, 
+                rgba(0, 0, 0, 0.6) -6px -7px 22px 0px inset,
+                rgba(13, 43, 60, 0.9) 0px 2px 0px 0px;
+            filter: brightness(100%) contrast(102%) saturate(220%);
+        }
+
+        .button-4 {
+            background: linear-gradient(163deg, rgb(30, 120, 140), rgb(20, 90, 110));
+            box-shadow: 
+                rgba(0, 0, 0, 0.22) -11px -12px 27px -5px inset, 
+                rgba(0, 0, 0, 0.48) 17px -2px 37px -5px inset,
+                rgba(10, 60, 70, 0.6) 0px 8px 0px 0px;
+            filter: brightness(98%) contrast(111%) saturate(171%);
+        }
+
+        .button-4:hover {
+            transform: translateY(4px);
+            box-shadow: 
+                rgba(0, 0, 0, 0.18) -9px -10px 22px -4px inset, 
+                rgba(0, 0, 0, 0.42) 14px -1px 30px -4px inset,
+                rgba(10, 60, 70, 0.7) 0px 4px 0px 0px;
+            filter: brightness(95%) contrast(111%) saturate(171%);
+        }
+
+        .button-4:active {
+            transform: translateY(6px);
+            box-shadow: 
+                rgba(0, 0, 0, 0.3) -6px -7px 15px -3px inset, 
+                rgba(0, 0, 0, 0.6) 10px 0px 22px -3px inset,
+                rgba(10, 60, 70, 0.9) 0px 2px 0px 0px;
+            filter: brightness(92%) contrast(111%) saturate(185%);
+        }
+
+        .button-9 {
+            background: rgb(25, 75, 95);
+            box-shadow: 
+                rgba(0, 0, 0, 0.48) 8px -6px 30px 13px inset,
+                rgba(13, 38, 48, 0.6) 0px 7px 0px 0px;
+            text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 2px;
+            filter: brightness(130%) contrast(88%) saturate(131%);
+        }
+
+        .button-9:hover {
+            transform: translateY(3.5px);
+            box-shadow: 
+                rgba(0, 0, 0, 0.42) 6px -4px 24px 10px inset,
+                rgba(13, 38, 48, 0.7) 0px 3.5px 0px 0px;
+            filter: brightness(125%) contrast(88%) saturate(131%);
+        }
+
+        .button-9:active {
+            transform: translateY(5.5px);
+            box-shadow: 
+                rgba(0, 0, 0, 0.6) 4px -2px 18px 7px inset,
+                rgba(13, 38, 48, 0.9) 0px 1.5px 0px 0px;
+            filter: brightness(120%) contrast(88%) saturate(150%);
+        }
+
+        .button-teal {
+            background: rgb(20, 85, 75);
+            box-shadow: 
+                rgba(10, 43, 38, 0.8) 0px 5px 1px 1px, 
+                rgba(0, 0, 0, 0.54) 2px -9px 9px -8px inset;
+            filter: brightness(141%) contrast(137%) saturate(200%);
+        }
+
+        .button-teal:hover {
+            transform: translateY(2.5px);
+            box-shadow: 
+                rgba(10, 43, 38, 0.7) 0px 2.5px 1px 1px, 
+                rgba(0, 0, 0, 0.45) 1px -6px 7px -6px inset;
+            filter: brightness(135%) contrast(137%) saturate(200%);
+        }
+
+        .button-teal:active {
+            transform: translateY(4.5px);
+            box-shadow: 
+                rgba(10, 43, 38, 0.9) 0px 0.5px 1px 1px, 
+                rgba(0, 0, 0, 0.65) 1px -3px 4px -4px inset;
+            filter: brightness(125%) contrast(137%) saturate(220%);
+        }
+
+        .button-cyan {
+            background: linear-gradient(335deg, rgb(25, 120, 135), rgb(35, 100, 125));
+            box-shadow: 
+                rgba(13, 60, 68, 0.8) 0px 5px 1px 1px, 
+                rgba(0, 0, 0, 0.31) -2px -13px 16px 0px inset;
+            filter: brightness(95%) contrast(113%) saturate(200%);
+        }
+
+        .button-cyan:hover {
+            transform: translateY(2.5px);
+            box-shadow: 
+                rgba(13, 60, 68, 0.7) 0px 2.5px 1px 1px, 
+                rgba(0, 0, 0, 0.25) -1px -10px 12px 0px inset;
+            filter: brightness(90%) contrast(113%) saturate(200%);
+        }
+
+        .button-cyan:active {
+            transform: translateY(4.5px);
+            box-shadow: 
+                rgba(13, 60, 68, 0.9) 0px 0.5px 1px 1px, 
+                rgba(0, 0, 0, 0.45) -1px -6px 8px 0px inset;
+            filter: brightness(85%) contrast(113%) saturate(220%);
+        }
+
+        .button-purple {
+            background: linear-gradient(209deg, rgb(45, 85, 145), rgb(55, 95, 165));
+            box-shadow: 
+                rgba(23, 43, 73, 0.8) 0px 5px 1px 1px, 
+                rgba(0, 0, 0, 0.35) 3px -12px 8px -2px inset;
+            filter: brightness(95%) contrast(113%) saturate(200%);
+        }
+
+        .button-purple:hover {
+            transform: translateY(2.5px);
+            box-shadow: 
+                rgba(23, 43, 73, 0.7) 0px 2.5px 1px 1px, 
+                rgba(0, 0, 0, 0.28) 2px -9px 6px -1px inset;
+            filter: brightness(90%) contrast(113%) saturate(200%);
+        }
+
+        .button-purple:active {
+            transform: translateY(4.5px);
+            box-shadow: 
+                rgba(23, 43, 73, 0.9) 0px 0.5px 1px 1px, 
+                rgba(0, 0, 0, 0.5) 2px -5px 4px 0px inset;
+            filter: brightness(85%) contrast(113%) saturate(220%);
+        }
+
+        .button-indigo {
+            background: linear-gradient(268deg, rgb(35, 75, 125), rgb(45, 85, 135));
+            box-shadow: 
+                rgba(18, 38, 63, 0.9) 0px 5px 1px 1px, 
+                rgba(0, 0, 0, 0.5) 4px -7px 13px 3px inset;
+            filter: brightness(95%) contrast(113%) saturate(200%);
+        }
+
+        .button-indigo:hover {
+            transform: translateY(2.5px);
+            box-shadow: 
+                rgba(18, 38, 63, 0.8) 0px 2.5px 1px 1px, 
+                rgba(0, 0, 0, 0.4) 3px -5px 10px 2px inset;
+            filter: brightness(90%) contrast(113%) saturate(200%);
+        }
+
+        .button-indigo:active {
+            transform: translateY(4.5px);
+            box-shadow: 
+                rgba(18, 38, 63, 0.95) 0px 0.5px 1px 1px, 
+                rgba(0, 0, 0, 0.65) 2px -3px 6px 1px inset;
+            filter: brightness(85%) contrast(113%) saturate(220%);
+        }
+
+        .button-blue {
+            background: linear-gradient(213deg, rgb(25, 160, 195), rgb(45, 150, 185));
+            box-shadow: 
+                rgba(13, 80, 98, 0.8) 0px 5px 1px 1px, 
+                rgba(0, 0, 0, 0.5) 10px -9px 38px 3px inset;
+            filter: brightness(95%) contrast(113%) saturate(200%);
+        }
+
+        .button-blue:hover {
+            transform: translateY(2.5px);
+            box-shadow: 
+                rgba(13, 80, 98, 0.7) 0px 2.5px 1px 1px, 
+                rgba(0, 0, 0, 0.4) 8px -7px 30px 2px inset;
+            filter: brightness(90%) contrast(113%) saturate(200%);
+        }
+
+        .button-blue:active {
+            transform: translateY(4.5px);
+            box-shadow: 
+                rgba(13, 80, 98, 0.9) 0px 0.5px 1px 1px, 
+                rgba(0, 0, 0, 0.65) 5px -4px 20px 1px inset;
+            filter: brightness(85%) contrast(113%) saturate(220%);
+        }
+
+        .button-coral {
+            background: rgb(45, 125, 155);
+            box-shadow: 
+                rgba(23, 63, 78, 0.8) 0px 5px 1px 1px, 
+                rgba(0, 0, 0, 0.67) 1px 1px 15px -2px inset;
+            filter: brightness(95%) contrast(113%) saturate(200%);
+        }
+
+        .button-coral:hover {
+            transform: translateY(2.5px);
+            box-shadow: 
+                rgba(23, 63, 78, 0.7) 0px 2.5px 1px 1px, 
+                rgba(0, 0, 0, 0.55) 1px 1px 11px -1px inset;
+            filter: brightness(90%) contrast(113%) saturate(200%);
+        }
+
+        .button-coral:active {
+            transform: translateY(4.5px);
+            box-shadow: 
+                rgba(23, 63, 78, 0.9) 0px 0.5px 1px 1px, 
+                rgba(0, 0, 0, 0.8) 1px 1px 7px 0px inset;
+            filter: brightness(85%) contrast(113%) saturate(220%);
+        }
+
+        .button-turquoise {
+            background: linear-gradient(186deg, rgb(30, 115, 130), rgb(50, 135, 150));
+            box-shadow: 
+                rgba(15, 58, 65, 0.8) 0px 5px 1px 1px, 
+                rgba(0, 0, 0, 0.34) 4px -9px 18px 3px inset;
+            filter: brightness(95%) contrast(113%) saturate(200%);
+        }
+
+        .button-turquoise:hover {
+            transform: translateY(2.5px);
+            box-shadow: 
+                rgba(15, 58, 65, 0.7) 0px 2.5px 1px 1px, 
+                rgba(0, 0, 0, 0.27) 3px -7px 14px 2px inset;
+            filter: brightness(90%) contrast(113%) saturate(200%);
+        }
+
+        .button-turquoise:active {
+            transform: translateY(4.5px);
+            box-shadow: 
+                rgba(15, 58, 65, 0.9) 0px 0.5px 1px 1px, 
+                rgba(0, 0, 0, 0.5) 2px -4px 9px 1px inset;
+            filter: brightness(85%) contrast(113%) saturate(220%);
+        }
+
+        .button-lavender {
+            background: rgb(65, 125, 175);
+            box-shadow: 
+                rgba(33, 63, 88, 0.8) 0px 5px 1px 1px, 
+                rgba(0, 0, 0, 0.65) 5px -12px 29px -9px inset;
+            filter: brightness(95%) contrast(113%) saturate(200%);
+        }
+
+        .button-lavender:hover {
+            transform: translateY(2.5px);
+            box-shadow: 
+                rgba(33, 63, 88, 0.7) 0px 2.5px 1px 1px, 
+                rgba(0, 0, 0, 0.52) 4px -9px 22px -7px inset;
+            filter: brightness(90%) contrast(113%) saturate(200%);
+        }
+
+        .button-lavender:active {
+            transform: translateY(4.5px);
+            box-shadow: 
+                rgba(33, 63, 88, 0.9) 0px 0.5px 1px 1px, 
+                rgba(0, 0, 0, 0.75) 3px -5px 15px -4px inset;
+            filter: brightness(85%) contrast(113%) saturate(220%);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 40px;
+            }
+
+            h1 {
+                font-size: 42px;
+            }
+
+            .subtitle {
+                font-size: 18px;
+            }
+
+            .button {
+                width: 180px;
+                height: 65px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .button {
+                width: 160px;
+                height: 60px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="button-wrapper">
+            <button class="button button-2">Rick</button>
+        </div>
+        <div class="button-wrapper">
+            <button class="button button-4">Larry</button>
+        </div>
+        <div class="button-wrapper">
+            <button class="button button-9">Jack</button>
+        </div>
+        <div class="button-wrapper">
+            <button class="button button-teal">Lawrence</button>
+        </div>
+        <div class="button-wrapper">
+            <button class="button button-cyan">Pat</button>
+        </div>
+        <div class="button-wrapper">
+            <button class="button button-purple">Don</button>
+        </div>
+        <div class="button-wrapper">
+            <button class="button button-indigo">Marty</button>
+        </div>
+        <div class="button-wrapper">
+            <button class="button button-blue">Victor</button>
+        </div>
+        <div class="button-wrapper">
+            <button class="button button-coral">Stefan</button>
+        </div>
+        <div class="button-wrapper">
+            <button class="button button-turquoise">Soren</button>
+        </div>
+        <div class="button-wrapper">
+            <button class="button button-lavender">Ivan</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -67,32 +67,26 @@ export default function Home() {
 
         <div className="grid">
           <div className="card card-color-1">
-            <div className="badge">01</div>
             <h3 className="heading-md">Thing 1</h3>
           </div>
 
           <div className="card card-color-2">
-            <div className="badge">02</div>
             <h3 className="heading-md">Thing 2</h3>
           </div>
 
           <div className="card card-color-3">
-            <div className="badge">03</div>
             <h3 className="heading-md">Thing 3</h3>
           </div>
 
           <div className="card card-color-4">
-            <div className="badge">04</div>
             <h3 className="heading-md">Thing 4</h3>
           </div>
 
           <div className="card card-color-5">
-            <div className="badge">05</div>
             <h3 className="heading-md">Thing 5</h3>
           </div>
 
           <div className="card card-color-6">
-            <div className="badge">06</div>
             <h3 className="heading-md">Thing 6</h3>
           </div>
         </div>

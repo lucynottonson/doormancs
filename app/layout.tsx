@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import BackgroundBlobs from './BackgroundBlobs'
+import BackgroundBlobs from './components/BackgroundBlobs'
 import Navbar from './components/Navbar';
 
 

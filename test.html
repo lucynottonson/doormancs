@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ultimate Button Customizer v4 - With Animations</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #c8d5e8;
+      padding: 20px;
+      color: #1f2d42;
+    }
+
+    .playground {
+      max-width: 1800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 440px 1fr;
+      gap: 30px;
+    }
+
+    .controls {
+      background: #dce6f2;
+      border-radius: 25px;
+      padding: 30px;
+      box-shadow: 
+        inset 3px 3px 10px rgba(0, 0, 0, 0.15),
+        inset -3px -3px 10px rgba(255, 255, 255, 0.7);
+      height: calc(100vh - 40px);
+      position: sticky;
+      top: 20px;
+      overflow-y: auto;
+    }
+
+    .controls::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .controls::-webkit-scrollbar-track {
+      background: #eef4fa;
+      border-radius: 10px;
+    }
+
+    .controls::-webkit-scrollbar-thumb {
+      background: #6b7de8;
+      border-radius: 10px;
+    }
+
+    .controls h1 {
+      font-size: 1.5rem;
+      color: #4a6fa5;
+      margin-bottom: 12px;
+      position: sticky;
+      top: 0;
+      background: #dce6f2;
+      padding-bottom: 8px;
+      z-index: 10;
+    }
+
+    
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 15px;
+      position: sticky;
+      top: 50px;
+      background: #dce6f2;
+      padding-bottom: 12px;
+      z-index: 9;
+    }
+
+    .action-btn {
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 
+        0 3px 0 rgba(0, 0, 0, 0.15),
+        inset -2px -2px 4px rgba(0, 0, 0, 0.15),
+        inset 2px 2px 4px rgba(255, 255, 255, 0.2);
+    }
+
+    .action-btn:active {
+      transform: translateY(3px);
+      box-shadow: 
+        0 0 0 rgba(0, 0, 0, 0),
+        inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+        inset 2px 2px 4px rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-randomize {
+      background: #6b7de8;
+      color: white;
+    }
+
+    .btn-reset {
+      background: #3db8b8;
+      color: white;
+    }
+
+    .control-section {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid rgba(74, 111, 165, 0.2);
+    }
+
+    .control-section:last-child {
+      border-bottom: none;
+    }
+
+    .control-section h3 {
+      font-size: 0.95rem;
+      color: #0e1621;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .control-group {
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .control-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .control-label {
+      display: block;
+      font-size: 0.75rem;
+      color: #3d5270;
+      font-weight: 600;
+    }
+
+    .lock-toggle {
+      width: 20px;
+      height: 20px;
+      background: #eef4fa;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      transition: all 0.2s ease;
+      box-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.1),
+        -2px -2px 4px rgba(255, 255, 255, 0.6);
+    }
+
+    .lock-toggle:hover {
+      background: #dde8f4;
+    }
+
+    .lock-toggle.locked {
+      background: #6b7de8;
+      color: white;
+      box-shadow: 
+        inset 2px 2px 4px rgba(0, 0, 0, 0.2),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.1);
+    }
+
+    .control-input {
+      width: 100%;
+      padding: 6px 8px;
+      border: none;
+      border-radius: 7px;
+      background: #eef4fa;
+      box-shadow: 
+        inset 2px 2px 5px rgba(0, 0, 0, 0.1),
+        inset -2px -2px 5px rgba(255, 255, 255, 0.6);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      color: #1f2d42;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-track {
+      background: #eef4fa;
+      height: 5px;
+      border-radius: 10px;
+      box-shadow: 
+        inset 2px 2px 4px rgba(0, 0, 0, 0.1),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.6);
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #6b7de8;
+      box-shadow: 
+        0 2px 0 #4b5dc8,
+        inset -1px -1px 2px rgba(0, 0, 0, 0.2),
+        inset 1px 1px 2px rgba(255, 255, 255, 0.1);
+      margin-top: -4.5px;
+    }
+
+    .value-display {
+      display: inline-block;
+      margin-left: 6px;
+      font-size: 0.7rem;
+      color: #18283e;
+      font-weight: 600;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .material-presets {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .material-btn {
+      padding: 8px;
+      background: #26323e;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #4a6fa5;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 
+        2px 2px 5px rgba(0, 0, 0, 0.1),
+        -2px -2px 5px rgba(255, 255, 255, 0.6);
+    }
+
+    .material-btn:hover {
+      background: #6b7de8;
+      color: white;
+    }
+
+    .preview {
+      background: #25456c;
+      border-radius: 25px;
+      padding: 60px;
+      box-shadow: 
+        inset 3px 3px 10px rgba(52, 0, 104, 0.15),
+        inset -3px -3px 10px rgba(255, 255, 255, 0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 40px);
+      gap: 30px;
+    }
+
+    #buttonContainer {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #customButton {
+      border: none;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    /* Hover Animation */
+    #customButton:hover {
+      transform: translateY(-2px) scale(1.02);
+      filter: brightness(110%);
+    }
+
+    /* Click Animation */
+    #customButton:active {
+      transform: translateY(2px) scale(0.98);
+      filter: brightness(90%);
+    }
+
+    .code-output {
+      width: 100%;
+      background: #1f2d42;
+      color: #4da8e8;
+      padding: 15px;
+      border-radius: 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .copy-btn {
+      padding: 10px 20px;
+      background: #6b7de8;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 1400px) {
+      .playground { grid-template-columns: 1fr; }
+      .controls { position: relative; top: 0; height: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="playground">
+    <div class="controls">
+      <h1>Ultimate Customizer</h1>
+
+      <div class="action-buttons">
+        <button class="action-btn btn-randomize" onclick="randomizeAll()">Randomize</button>
+        <button class="action-btn btn-reset" onclick="resetToDefault()">↺ Reset</button>
+      </div>
+
+      <!-- CONTAINER -->
+      <div class="control-section">
+        <h3>Container</h3>
+
+        <div class="control-group">
+  <label class="control-label">Editing State:</label>
+  <select id="editingState" class="control-input" onchange="switchState()">
+    <option value="normal">Normal</option>
+    <option value="hover">Hover</option>
+    <option value="active">Click (Active)</option>
+  </select>
+</div>
+        
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Container Type</label>
+            <button class="lock-toggle" data-lock="containerType" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <select id="containerType" class="control-input">
+            <option value="none">None</option>
+            <option value="inset" selected>Inset (Carved)</option>
+            <option value="raised">Raised (Puffed)</option>
+            <option value="flat">Flat</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Container Padding</label>
+            <button class="lock-toggle" data-lock="containerPadding" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="containerPadding" class="control-input" min="0" max="80" value="20">
+          <span class="value-display" id="containerPaddingValue">20px</span>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Container Depth</label>
+            <button class="lock-toggle" data-lock="containerDepth" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="containerDepth" class="control-input" min="1" max="20" value="6">
+          <span class="value-display" id="containerDepthValue">6px</span>
+        </div>
+      </div>
+
+      <!-- SIZE & SHAPE -->
+      <div class="control-section">
+        <h3>📏 Button Size & Shape</h3>
+        
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Width</label>
+            <button class="lock-toggle" data-lock="width" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="width" class="control-input" min="50" max="500" value="200">
+          <span class="value-display" id="widthValue">200px</span>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Height</label>
+            <button class="lock-toggle" data-lock="height" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="height" class="control-input" min="30" max="200" value="60">
+          <span class="value-display" id="heightValue">60px</span>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Border Radius</label>
+            <button class="lock-toggle" data-lock="borderRadius" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="borderRadius" class="control-input" min="0" max="100" value="20">
+          <span class="value-display" id="borderRadiusValue">20px</span>
+        </div>
+      </div>
+
+      <!-- BACKGROUND -->
+      <div class="control-section">
+        <h3>Background</h3>
+        
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Background Type</label>
+            <button class="lock-toggle" data-lock="bgType" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <select id="bgType" class="control-input">
+            <option value="solid" selected>Solid</option>
+            <option value="gradient">Gradient</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Color 1</label>
+            <button class="lock-toggle" data-lock="bgColor1" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="color" id="bgColor1" class="control-input" value="#6b7de8">
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Color 2 (Gradient)</label>
+            <button class="lock-toggle" data-lock="bgColor2" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="color" id="bgColor2" class="control-input" value="#8b8ee8">
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Gradient Angle</label>
+            <button class="lock-toggle" data-lock="gradientAngle" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="gradientAngle" class="control-input" min="0" max="360" value="135">
+          <span class="value-display" id="gradientAngleValue">135°</span>
+        </div>
+      </div>
+
+      <!-- BORDER -->
+      <div class="control-section">
+        <h3>📐 Border</h3>
+        
+        <div class="control-group">
+          <div class="control-header">
+            <div class="checkbox-group">
+              <input type="checkbox" id="borderEnabled">
+              <label class="control-label">Enable Border</label>
+            </div>
+            <button class="lock-toggle" data-lock="borderEnabled" onclick="toggleLock(this)">🔓</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Width</label>
+            <button class="lock-toggle" data-lock="borderWidth" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="borderWidth" class="control-input" min="1" max="20" value="3">
+          <span class="value-display" id="borderWidthValue">3px</span>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Color</label>
+            <button class="lock-toggle" data-lock="borderColor" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="color" id="borderColor" class="control-input" value="#4a6fa5">
+        </div>
+      </div>
+
+      <!-- SHADOW 1 -->
+      <div class="control-section">
+        <h3>🌑 Shadow Layer 1</h3>
+        
+        <div class="control-group">
+          <div class="control-header">
+            <div class="checkbox-group">
+              <input type="checkbox" id="shadow1Enabled" checked>
+              <label class="control-label">Enable</label>
+            </div>
+            <button class="lock-toggle" data-lock="shadow1Enabled" onclick="toggleLock(this)">🔓</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Type</label>
+            <button class="lock-toggle" data-lock="shadow1Type" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <select id="shadow1Type" class="control-input">
+            <option value="drop">Drop</option>
+            <option value="inset" selected>Inset</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">X / Y / Blur / Spread</label>
+            <button class="lock-toggle" data-lock="shadow1XYBS" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">
+            <input type="number" id="shadow1X" class="control-input" value="3" style="padding: 4px; font-size: 0.7rem;">
+            <input type="number" id="shadow1Y" class="control-input" value="3" style="padding: 4px; font-size: 0.7rem;">
+            <input type="number" id="shadow1Blur" class="control-input" value="8" style="padding: 4px; font-size: 0.7rem;">
+            <input type="number" id="shadow1Spread" class="control-input" value="0" style="padding: 4px; font-size: 0.7rem;">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Opacity</label>
+            <button class="lock-toggle" data-lock="shadow1Opacity" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="shadow1Opacity" class="control-input" min="0" max="100" value="20">
+          <span class="value-display" id="shadow1OpacityValue">20%</span>
+        </div>
+      </div>
+
+      <!-- SHADOW 2 -->
+      <div class="control-section">
+        <h3>🌑 Shadow Layer 2</h3>
+        
+        <div class="control-group">
+          <div class="control-header">
+            <div class="checkbox-group">
+              <input type="checkbox" id="shadow2Enabled" checked>
+              <label class="control-label">Enable</label>
+            </div>
+            <button class="lock-toggle" data-lock="shadow2Enabled" onclick="toggleLock(this)">🔓</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Type</label>
+            <button class="lock-toggle" data-lock="shadow2Type" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <select id="shadow2Type" class="control-input">
+            <option value="drop">Drop</option>
+            <option value="inset" selected>Inset</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">X / Y / Blur / Spread</label>
+            <button class="lock-toggle" data-lock="shadow2XYBS" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">
+            <input type="number" id="shadow2X" class="control-input" value="-3" style="padding: 4px; font-size: 0.7rem;">
+            <input type="number" id="shadow2Y" class="control-input" value="-3" style="padding: 4px; font-size: 0.7rem;">
+            <input type="number" id="shadow2Blur" class="control-input" value="8" style="padding: 4px; font-size: 0.7rem;">
+            <input type="number" id="shadow2Spread" class="control-input" value="0" style="padding: 4px; font-size: 0.7rem;">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Opacity</label>
+            <button class="lock-toggle" data-lock="shadow2Opacity" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="shadow2Opacity" class="control-input" min="0" max="100" value="10">
+          <span class="value-display" id="shadow2OpacityValue">10%</span>
+        </div>
+      </div>
+
+      <!-- SHADOW 3 -->
+      <div class="control-section">
+        <h3>🌑 Shadow Layer 3</h3>
+        
+        <div class="control-group">
+          <div class="control-header">
+            <div class="checkbox-group">
+              <input type="checkbox" id="shadow3Enabled">
+              <label class="control-label">Enable</label>
+            </div>
+            <button class="lock-toggle" data-lock="shadow3Enabled" onclick="toggleLock(this)">🔓</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Type</label>
+            <button class="lock-toggle" data-lock="shadow3Type" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <select id="shadow3Type" class="control-input">
+            <option value="drop" selected>Drop</option>
+            <option value="inset">Inset</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">X / Y / Blur / Spread</label>
+            <button class="lock-toggle" data-lock="shadow3XYBS" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;">
+            <input type="number" id="shadow3X" class="control-input" value="0" style="padding: 4px; font-size: 0.7rem;">
+            <input type="number" id="shadow3Y" class="control-input" value="12" style="padding: 4px; font-size: 0.7rem;">
+            <input type="number" id="shadow3Blur" class="control-input" value="0" style="padding: 4px; font-size: 0.7rem;">
+            <input type="number" id="shadow3Spread" class="control-input" value="0" style="padding: 4px; font-size: 0.7rem;">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Opacity</label>
+            <button class="lock-toggle" data-lock="shadow3Opacity" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="shadow3Opacity" class="control-input" min="0" max="100" value="15">
+          <span class="value-display" id="shadow3OpacityValue">15%</span>
+        </div>
+      </div>
+
+      <!-- TEXT -->
+      <div class="control-section">
+        <h3>Text Content</h3>
+        
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Text</label>
+            <button class="lock-toggle" data-lock="buttonText" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="text" id="buttonText" class="control-input" value="Button">
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Size</label>
+            <button class="lock-toggle" data-lock="fontSize" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="fontSize" class="control-input" min="10" max="60" value="16">
+          <span class="value-display" id="fontSizeValue">16px</span>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Weight</label>
+            <button class="lock-toggle" data-lock="fontWeight" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <select id="fontWeight" class="control-input">
+            <option value="400">Normal</option>
+            <option value="500">Medium</option>
+            <option value="600">Semi-Bold</option>
+            <option value="700" selected>Bold</option>
+            <option value="800">Extra-Bold</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Color</label>
+            <button class="lock-toggle" data-lock="textColor" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="color" id="textColor" class="control-input" value="#1f2d42">
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Letter Spacing</label>
+            <button class="lock-toggle" data-lock="letterSpacing" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="letterSpacing" class="control-input" min="-5" max="10" value="0">
+          <span class="value-display" id="letterSpacingValue">0px</span>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Transform</label>
+            <button class="lock-toggle" data-lock="textTransform" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <select id="textTransform" class="control-input">
+            <option value="none">None</option>
+            <option value="uppercase">UPPERCASE</option>
+            <option value="lowercase">lowercase</option>
+            <option value="capitalize">Capitalize</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- TEXT EFFECTS -->
+      <div class="control-section">
+        <h3>Text Effects</h3>
+        
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Style</label>
+            <button class="lock-toggle" data-lock="textShadowStyle" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <select id="textShadowStyle" class="control-input">
+            <option value="none">None</option>
+            <option value="inset">Inset (Carved)</option>
+            <option value="raised">Raised (Puffed)</option>
+            <option value="drop">Drop Shadow</option>
+            <option value="glow">Glow</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Intensity</label>
+            <button class="lock-toggle" data-lock="textShadowIntensity" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="textShadowIntensity" class="control-input" min="0" max="10" value="2">
+          <span class="value-display" id="textShadowIntensityValue">2px</span>
+        </div>
+      </div>
+
+      <!-- TEXTURE -->
+      <div class="control-section">
+        <h3>Texture</h3>
+        
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Type</label>
+            <button class="lock-toggle" data-lock="textureType" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <select id="textureType" class="control-input">
+            <option value="none">None</option>
+            <option value="grain">Grain</option>
+            <option value="noise">Noise</option>
+            <option value="dots">Dots</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Opacity</label>
+            <button class="lock-toggle" data-lock="textureOpacity" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="textureOpacity" class="control-input" min="0" max="100" value="0">
+          <span class="value-display" id="textureOpacityValue">0%</span>
+        </div>
+      </div>
+
+      <!-- EFFECTS -->
+      <div class="control-section">
+        <h3>Effects</h3>
+        
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Opacity</label>
+            <button class="lock-toggle" data-lock="opacity" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="opacity" class="control-input" min="0" max="100" value="100">
+          <span class="value-display" id="opacityValue">100%</span>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Brightness</label>
+            <button class="lock-toggle" data-lock="brightness" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="brightness" class="control-input" min="50" max="200" value="100">
+          <span class="value-display" id="brightnessValue">100%</span>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Contrast</label>
+            <button class="lock-toggle" data-lock="contrast" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="contrast" class="control-input" min="50" max="200" value="100">
+          <span class="value-display" id="contrastValue">100%</span>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Saturate</label>
+            <button class="lock-toggle" data-lock="saturate" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="saturate" class="control-input" min="0" max="200" value="100">
+          <span class="value-display" id="saturateValue">100%</span>
+        </div>
+      </div>
+
+      <!-- TRANSFORM -->
+      <div class="control-section">
+        <h3>Transform</h3>
+        
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Rotate</label>
+            <button class="lock-toggle" data-lock="rotate" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="rotate" class="control-input" min="-45" max="45" value="0">
+          <span class="value-display" id="rotateValue">0°</span>
+        </div>
+
+        <div class="control-group">
+          <div class="control-header">
+            <label class="control-label">Scale</label>
+            <button class="lock-toggle" data-lock="scale" onclick="toggleLock(this)">🔓</button>
+          </div>
+          <input type="range" id="scale" class="control-input" min="50" max="200" value="100">
+          <span class="value-display" id="scaleValue">100%</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="preview">
+      <div id="buttonContainer">
+        <button id="customButton">Button</button>
+      </div>
+      <button class="copy-btn" onclick="copyCSS()">📋 Copy CSS</button>
+      <div class="code-output" id="cssOutput"></div>
+    </div>
+  </div>
+
+  <script>
+const button = document.getElementById('customButton');
+const container = document.getElementById('buttonContainer');
+const cssOutput = document.getElementById('cssOutput');
+
+const controls = {};
+const locks = {};
+
+document.querySelectorAll('[id]').forEach(el => {
+  if (el.classList.contains('control-input') || el.type === 'checkbox' || el.type === 'number') {
+    controls[el.id] = el;
+    locks[el.id] = false;
+  }
+});
+
+let defaultValues = {};
+
+const toggleLock = (button) => {
+  const key = button.getAttribute('data-lock');
+  locks[key] = !locks[key];
+  button.classList.toggle('locked');
+  button.textContent = locks[key] ? '🔒' : '🔓';
+};
+
+const saveDefaults = () => {
+  Object.keys(controls).forEach(key => {
+    const el = controls[key];
+    defaultValues[key] = el.type === 'checkbox' ? el.checked : el.value;
+  });
+};
+
+const updateValueDisplays = () => {
+  document.querySelectorAll('input[type="range"]').forEach(input => {
+    const display = document.getElementById(input.id + 'Value');
+    if (display) {
+      const value = input.value;
+      const id = input.id;
+      if (id.includes('Angle') || id.includes('rotate')) {
+        display.textContent = value + '°';
+      } else if (id.includes('Opacity') || id.includes('scale') || id.includes('brightness') || id.includes('contrast') || id.includes('saturate')) {
+        display.textContent = value + '%';
+      } else {
+        display.textContent = value + 'px';
+      }
+    }
+  });
+};
+
+const hexToRGBA = (hex, opacity) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity / 100})`;
+};
+
+const updateButton = () => {
+  // Container
+  const containerType = controls.containerType.value;
+  const padding = controls.containerPadding.value;
+  const depth = controls.containerDepth.value;
+  
+  if (containerType === 'none') {
+    container.style.padding = '0';
+    container.style.boxShadow = 'none';
+    container.style.background = 'transparent';
+    container.style.borderRadius = '0';
+  } else {
+    container.style.padding = padding + 'px';
+    container.style.borderRadius = '30px';
+    container.style.background = '#dce6f2';
+    
+    if (containerType === 'inset') {
+      container.style.boxShadow = `inset ${depth}px ${depth}px ${depth * 2}px rgba(0, 0, 0, 0.2), inset -${depth}px -${depth}px ${depth * 2}px rgba(255, 255, 255, 0.7)`;
+    } else if (containerType === 'raised') {
+      container.style.boxShadow = `${depth}px ${depth}px ${depth * 2}px rgba(0, 0, 0, 0.2), -${depth}px -${depth}px ${depth * 2}px rgba(255, 255, 255, 0.7)`;
+    } else {
+      container.style.boxShadow = 'none';
+    }
+  }
+  
+  // Button
+  button.style.width = controls.width.value + 'px';
+  button.style.height = controls.height.value + 'px';
+  button.style.borderRadius = controls.borderRadius.value + 'px';
+  
+  if (controls.bgType.value === 'solid') {
+    button.style.background = controls.bgColor1.value;
+  } else {
+    const angle = controls.gradientAngle.value;
+    button.style.background = `linear-gradient(${angle}deg, ${controls.bgColor1.value}, ${controls.bgColor2.value})`;
+  }
+  
+  // Border
+  if (controls.borderEnabled.checked) {
+    button.style.border = `${controls.borderWidth.value}px solid ${controls.borderColor.value}`;
+  } else {
+    button.style.border = 'none';
+  }
+  
+  // Shadows
+  let shadows = [];
+  
+  if (controls.shadow1Enabled.checked) {
+    const type = controls.shadow1Type.value === 'inset' ? 'inset ' : '';
+    const color = hexToRGBA('#000000', controls.shadow1Opacity.value);
+    shadows.push(`${type}${controls.shadow1X.value}px ${controls.shadow1Y.value}px ${controls.shadow1Blur.value}px ${controls.shadow1Spread.value}px ${color}`);
+  }
+  
+  if (controls.shadow2Enabled.checked) {
+    const type = controls.shadow2Type.value === 'inset' ? 'inset ' : '';
+    const color = hexToRGBA('#ffffff', controls.shadow2Opacity.value);
+    shadows.push(`${type}${controls.shadow2X.value}px ${controls.shadow2Y.value}px ${controls.shadow2Blur.value}px ${controls.shadow2Spread.value}px ${color}`);
+  }
+  
+  if (controls.shadow3Enabled.checked) {
+    const type = controls.shadow3Type.value === 'inset' ? 'inset ' : '';
+    const color = hexToRGBA('#000000', controls.shadow3Opacity.value);
+    shadows.push(`${type}${controls.shadow3X.value}px ${controls.shadow3Y.value}px ${controls.shadow3Blur.value}px ${controls.shadow3Spread.value}px ${color}`);
+  }
+  
+  button.style.boxShadow = shadows.join(', ');
+  
+  // Text
+  button.textContent = controls.buttonText.value;
+  button.style.fontSize = controls.fontSize.value + 'px';
+  button.style.fontWeight = controls.fontWeight.value;
+  button.style.color = controls.textColor.value;
+  button.style.letterSpacing = controls.letterSpacing.value + 'px';
+  button.style.textTransform = controls.textTransform.value;
+  
+  // Text effects
+  const textStyle = controls.textShadowStyle.value;
+  const intensity = controls.textShadowIntensity.value;
+  
+  let textShadow = 'none';
+  
+  if (textStyle === 'inset') {
+    textShadow = `${intensity}px ${intensity}px ${intensity * 2}px rgba(255, 255, 255, 0.6), -${intensity}px -${intensity}px ${intensity * 2}px rgba(0, 0, 0, 0.3)`;
+  } else if (textStyle === 'raised') {
+    textShadow = `0 ${intensity}px ${intensity * 2}px rgba(0, 0, 0, 0.3), 0 -${intensity / 2}px ${intensity}px rgba(255, 255, 255, 0.5)`;
+  } else if (textStyle === 'drop') {
+    textShadow = `${intensity}px ${intensity}px ${intensity * 2}px rgba(0, 0, 0, 0.5)`;
+  } else if (textStyle === 'glow') {
+    textShadow = `0 0 ${intensity * 3}px rgba(255, 255, 255, 0.8), 0 0 ${intensity * 6}px rgba(255, 255, 255, 0.5)`;
+  }
+  
+  button.style.textShadow = textShadow;
+  
+  // Filters
+  const filters = [];
+  if (controls.brightness.value != 100) filters.push(`brightness(${controls.brightness.value}%)`);
+  if (controls.contrast.value != 100) filters.push(`contrast(${controls.contrast.value}%)`);
+  if (controls.saturate.value != 100) filters.push(`saturate(${controls.saturate.value}%)`);
+  button.style.filter = filters.join(' ');
+  
+  button.style.opacity = controls.opacity.value / 100;
+  
+  // Transform
+  const transforms = [];
+  if (controls.rotate.value != 0) transforms.push(`rotate(${controls.rotate.value}deg)`);
+  if (controls.scale.value != 100) transforms.push(`scale(${controls.scale.value / 100})`);
+  button.style.transform = transforms.join(' ');
+  
+  generateCSS();
+};
+
+const generateCSS = () => {
+  let css = '.button {\n';
+  if (container.style.boxShadow !== 'none') {
+    css += `  /* Container */\n  padding: ${container.style.padding};\n`;
+    css += `  background: ${container.style.background};\n`;
+    css += `  box-shadow: ${container.style.boxShadow};\n`;
+    css += `  border-radius: ${container.style.borderRadius};\n\n`;
+  }
+  css += `  /* Button */\n`;
+  css += `  width: ${button.style.width};\n`;
+  css += `  height: ${button.style.height};\n`;
+  css += `  border-radius: ${button.style.borderRadius};\n`;
+  css += `  background: ${button.style.background};\n`;
+  if (button.style.border !== 'none') css += `  border: ${button.style.border};\n`;
+  css += `  box-shadow: ${button.style.boxShadow};\n`;
+  css += `  font-size: ${button.style.fontSize};\n`;
+  css += `  font-weight: ${button.style.fontWeight};\n`;
+  css += `  color: ${button.style.color};\n`;
+  if (button.style.letterSpacing !== '0px') css += `  letter-spacing: ${button.style.letterSpacing};\n`;
+  if (button.style.textTransform !== 'none') css += `  text-transform: ${button.style.textTransform};\n`;
+  if (button.style.textShadow !== 'none') css += `  text-shadow: ${button.style.textShadow};\n`;
+  if (button.style.transform) css += `  transform: ${button.style.transform};\n`;
+  if (button.style.opacity != 1) css += `  opacity: ${button.style.opacity};\n`;
+  if (button.style.filter) css += `  filter: ${button.style.filter};\n`;
+  css += `  cursor: pointer;\n`;
+  css += `  font-family: 'Inter', sans-serif;\n`;
+  css += `  transition: all 0.3s ease;\n`;
+  css += `}\n\n`;
+  css += `.button:hover {\n`;
+  css += `  transform: translateY(-2px) scale(1.02);\n`;
+  css += `  filter: brightness(110%);\n`;
+  css += `}\n\n`;
+  css += `.button:active {\n`;
+  css += `  transform: translateY(2px) scale(0.98);\n`;
+  css += `  filter: brightness(90%);\n`;
+  css += `}`;
+  cssOutput.textContent = css;
+};
+
+const applyMaterial = (material) => {
+  const materials = {
+    clay: { bgColor1: '#b8b4c0', shadow1Type: 'inset', shadow1X: 3, shadow1Y: 3, shadow1Blur: 8, textShadowStyle: 'inset' },
+    glass: { bgColor1: '#ffffff', shadow1Type: 'drop', shadow1X: 0, shadow1Y: 8, shadow1Blur: 16, opacity: 30 },
+    matte: { bgColor1: '#6b7de8', shadow1Type: 'drop', shadow1X: 0, shadow1Y: 4, shadow1Blur: 8, textShadowStyle: 'none' },
+    glossy: { bgColor1: '#6b7de8', shadow1Type: 'inset', shadow1X: 0, shadow1Y: -2, shadow1Blur: 4, textShadowStyle: 'raised' },
+    metal: { bgColor1: '#a8b2c0', shadow1Type: 'inset', shadow1X: -1, shadow1Y: -1, shadow1Blur: 2, textShadowStyle: 'inset' },
+    plastic: { bgColor1: '#ff6b9d', shadow1Type: 'inset', shadow1X: 0, shadow1Y: 2, shadow1Blur: 4, textShadowStyle: 'raised' },
+    neon: { bgColor1: '#ff00ff', shadow1Type: 'drop', shadow1X: 0, shadow1Y: 0, shadow1Blur: 20, textShadowStyle: 'glow' },
+    wood: { bgColor1: '#8b6f47', shadow1Type: 'inset', shadow1X: 2, shadow1Y: 2, shadow1Blur: 5, textShadowStyle: 'inset' }
+  };
+  
+  const preset = materials[material];
+  if (preset) {
+    Object.keys(preset).forEach(key => {
+      if (controls[key] && !locks[key]) {
+        controls[key].value = preset[key];
+      }
+    });
+    updateValueDisplays();
+    updateButton();
+  }
+};
+
+const randomizeAll = () => {
+  // Container
+  if (!locks.containerType) {
+    const types = ['none', 'inset', 'raised', 'flat'];
+    controls.containerType.value = types[Math.floor(Math.random() * types.length)];
+  }
+  if (!locks.containerPadding) controls.containerPadding.value = Math.floor(Math.random() * 60) + 10;
+  if (!locks.containerDepth) controls.containerDepth.value = Math.floor(Math.random() * 15) + 2;
+  
+  // Size & Shape
+  if (!locks.width) controls.width.value = Math.floor(Math.random() * 300) + 100;
+  if (!locks.height) controls.height.value = Math.floor(Math.random() * 100) + 40;
+  if (!locks.borderRadius) controls.borderRadius.value = Math.floor(Math.random() * 60);
+  
+  // Background
+  if (!locks.bgType) {
+    controls.bgType.value = Math.random() > 0.5 ? 'solid' : 'gradient';
+  }
+  if (!locks.bgColor1) controls.bgColor1.value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+  if (!locks.bgColor2) controls.bgColor2.value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+  if (!locks.gradientAngle) controls.gradientAngle.value = Math.floor(Math.random() * 360);
+  
+  // Border
+  if (!locks.borderEnabled) controls.borderEnabled.checked = Math.random() > 0.5;
+  if (!locks.borderWidth) controls.borderWidth.value = Math.floor(Math.random() * 15) + 1;
+  if (!locks.borderColor) controls.borderColor.value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+  
+  // Shadow 1
+  if (!locks.shadow1Enabled) controls.shadow1Enabled.checked = Math.random() > 0.3;
+  if (!locks.shadow1Type) {
+    controls.shadow1Type.value = Math.random() > 0.5 ? 'drop' : 'inset';
+  }
+  if (!locks.shadow1XYBS) {
+    controls.shadow1X.value = Math.floor(Math.random() * 40) - 20;
+    controls.shadow1Y.value = Math.floor(Math.random() * 40) - 20;
+    controls.shadow1Blur.value = Math.floor(Math.random() * 40);
+    controls.shadow1Spread.value = Math.floor(Math.random() * 20) - 10;
+  }
+  if (!locks.shadow1Opacity) controls.shadow1Opacity.value = Math.floor(Math.random() * 60) + 10;
+  
+  // Shadow 2
+  if (!locks.shadow2Enabled) controls.shadow2Enabled.checked = Math.random() > 0.3;
+  if (!locks.shadow2Type) {
+    controls.shadow2Type.value = Math.random() > 0.5 ? 'drop' : 'inset';
+  }
+  if (!locks.shadow2XYBS) {
+    controls.shadow2X.value = Math.floor(Math.random() * 40) - 20;
+    controls.shadow2Y.value = Math.floor(Math.random() * 40) - 20;
+    controls.shadow2Blur.value = Math.floor(Math.random() * 40);
+    controls.shadow2Spread.value = Math.floor(Math.random() * 20) - 10;
+  }
+  if (!locks.shadow2Opacity) controls.shadow2Opacity.value = Math.floor(Math.random() * 60) + 10;
+  
+  // Shadow 3
+  if (!locks.shadow3Enabled) controls.shadow3Enabled.checked = Math.random() > 0.3;
+  if (!locks.shadow3Type) {
+    controls.shadow3Type.value = Math.random() > 0.5 ? 'drop' : 'inset';
+  }
+  if (!locks.shadow3XYBS) {
+    controls.shadow3X.value = Math.floor(Math.random() * 40) - 20;
+    controls.shadow3Y.value = Math.floor(Math.random() * 40) - 20;
+    controls.shadow3Blur.value = Math.floor(Math.random() * 40);
+    controls.shadow3Spread.value = Math.floor(Math.random() * 20) - 10;
+  }
+  if (!locks.shadow3Opacity) controls.shadow3Opacity.value = Math.floor(Math.random() * 60) + 10;
+  
+  // Text
+  if (!locks.fontSize) controls.fontSize.value = Math.floor(Math.random() * 30) + 12;
+  if (!locks.fontWeight) {
+    const weights = ['400', '500', '600', '700', '800'];
+    controls.fontWeight.value = weights[Math.floor(Math.random() * weights.length)];
+  }
+  if (!locks.textColor) controls.textColor.value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+  if (!locks.letterSpacing) controls.letterSpacing.value = Math.floor(Math.random() * 10) - 3;
+  if (!locks.textTransform) {
+    const transforms = ['none', 'uppercase', 'lowercase', 'capitalize'];
+    controls.textTransform.value = transforms[Math.floor(Math.random() * transforms.length)];
+  }
+  
+  // Text Effects
+  if (!locks.textShadowStyle) {
+    const styles = ['none', 'inset', 'raised', 'drop', 'glow'];
+    controls.textShadowStyle.value = styles[Math.floor(Math.random() * styles.length)];
+  }
+  if (!locks.textShadowIntensity) controls.textShadowIntensity.value = Math.floor(Math.random() * 8) + 1;
+  
+  // Texture
+  if (!locks.textureType) {
+    const textures = ['none', 'grain', 'noise', 'dots'];
+    controls.textureType.value = textures[Math.floor(Math.random() * textures.length)];
+  }
+  if (!locks.textureOpacity) controls.textureOpacity.value = Math.floor(Math.random() * 50);
+  
+  // Effects
+  if (!locks.opacity) controls.opacity.value = Math.floor(Math.random() * 50) + 50;
+  if (!locks.brightness) controls.brightness.value = Math.floor(Math.random() * 100) + 70;
+  if (!locks.contrast) controls.contrast.value = Math.floor(Math.random() * 100) + 70;
+  if (!locks.saturate) controls.saturate.value = Math.floor(Math.random() * 150) + 50;
+  
+  // Transform
+  if (!locks.rotate) controls.rotate.value = Math.floor(Math.random() * 20) - 10;
+  if (!locks.scale) controls.scale.value = Math.floor(Math.random() * 80) + 80;
+  
+  updateValueDisplays();
+  updateButton();
+};
+
+const resetToDefault = () => {
+  Object.keys(defaultValues).forEach(key => {
+    if (controls[key]) {
+      if (controls[key].type === 'checkbox') {
+        controls[key].checked = defaultValues[key];
+      } else {
+        controls[key].value = defaultValues[key];
+      }
+    }
+  });
+  
+  document.querySelectorAll('.lock-toggle').forEach(btn => {
+    const key = btn.getAttribute('data-lock');
+    locks[key] = false;
+    btn.classList.remove('locked');
+    btn.textContent = '🔓';
+  });
+  
+  updateValueDisplays();
+  updateButton();
+};
+
+const copyCSS = () => {
+  navigator.clipboard.writeText(cssOutput.textContent).then(() => {
+    event.target.textContent = '✅ Copied!';
+    setTimeout(() => event.target.textContent = '📋 Copy CSS', 2000);
+  });
+};
+
+Object.values(controls).forEach(control => {
+  control.addEventListener('input', () => { updateValueDisplays(); updateButton(); });
+  control.addEventListener('change', () => { updateValueDisplays(); updateButton(); });
+});
+
+saveDefaults();
+updateValueDisplays();
+updateButton();
+  </script>
+
+</body>
+</html>

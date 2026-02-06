@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from "@/lib/supabase/client";
+import Link from 'next/link';
 
 export default function Dashboard() {
   const [profile, setProfile] = useState<any>(null);
@@ -51,12 +52,14 @@ export default function Dashboard() {
         </div>
 
         <div className="grid">
-          <div className="card card-color-2" style={{ minHeight: 'auto' }}>
-            <h3 className="heading-md" style={{ marginTop: 0, color: 'var(--text-primary)' }}>
-              something else
-            </h3>
-            <p>information about something else</p>
-          </div>
+          <Link href="/members/personalityquiz" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <div className="card card-color-2" style={{ minHeight: 'auto' }}>
+              <h3 className="heading-md" style={{ marginTop: 0, color: 'var(--accent-secondary)' }}>
+                Personality Quiz
+              </h3>
+              <p>Take our personality assessment to learn more about yourself</p>
+            </div>
+          </Link>
 
           <div className="card card-color-3" style={{ minHeight: 'auto' }}>
             <h3 className="heading-md" style={{ marginTop: 0, color: 'var(--color-5)' }}>
