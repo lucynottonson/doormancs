@@ -54,77 +54,28 @@ export default function Home() {
   return (
     <>
       <div className="container">
- 
-
-        <section className="section section-center">
-          <h1 className="heading-xl">
-            Heading
-          </h1>
-          <div className="content-box text-lead">
-            subheader
-          </div>
-        </section>
-
-        <div className="grid">
-          <div className="card card-color-1">
-            <h3 className="heading-md">Thing 1</h3>
-          </div>
-
-          <div className="card card-color-2">
-            <h3 className="heading-md">Thing 2</h3>
-          </div>
-
-          <div className="card card-color-3">
-            <h3 className="heading-md">Thing 3</h3>
-          </div>
-
-          <div className="card card-color-4">
-            <h3 className="heading-md">Thing 4</h3>
-          </div>
-
-          <div className="card card-color-5">
-            <h3 className="heading-md">Thing 5</h3>
-          </div>
-
-          <div className="card card-color-6">
-            <h3 className="heading-md">Thing 6</h3>
-          </div>
-        </div>
-
-        <section className="section-featured mb-xl">
-          <h2 className="heading-lg text-center">more things</h2>
-          <div className="flex-wrap">
-            <div className="btn-pill">thing</div>
-            <div className="btn-pill">thing</div>
-            <div className="btn-pill">thing</div>
-            <div className="btn-pill">thing</div>
-            <div className="btn-pill">thing</div>
-            <div className="btn-pill">thing</div>
-            <div className="btn-pill">thing</div>
-            <div className="btn-pill">thing</div>
-
-          </div>
-        </section>
 
         <section className="section mb-xl">
-          <div className="grid-2">
-            <div className="card card-color-1">
-              <h3 className="heading-md">No number thing</h3>
-            </div>
+          <h2 className="heading-lg text-center mb-md">This site is under active development!</h2>
+          <h3>
+            Please refer to the emails below for any inquiries:
+          </h3>
+        <section/>
 
-            <div className="card card-color-3">
-              <h3 className="heading-md">No number thing</h3>
+        <section className="section mb-x;">
+          <div className="accordion">
+            <div className="accordion-content">
             </div>
           </div>
-        </section>
+          </section>
+        <section className="section mb-x;">
 
-        <section className="section mb-xl">
-          <h2 className="heading-lg text-center mb-md">Other thing</h2>
-          
+
+        </section>
           <div className="accordion">
             <button className="accordion-header">
-              1
-              <span>+</span>
+             Get Involved 
+              <span>team@doormancs.org</span>
             </button>
             <div className="accordion-content">
             </div>
@@ -132,8 +83,8 @@ export default function Home() {
 
            <div className="accordion">
             <button className="accordion-header">
-              1
-              <span>+</span>
+              Design
+              <span>lucy@doormancs.org</span>
             </button>
             <div className="accordion-content">
             </div>
@@ -141,19 +92,22 @@ export default function Home() {
 
            <div className="accordion">
             <button className="accordion-header">
-              1
-              <span>+</span>
+              
+              <span>Other</span>
+              <span>
+                admin@doormancs.org
+              </span>
             </button>
             <div className="accordion-content">
             </div>
           </div>
         </section>
 
-        <footer>
-          <div className="footer-content">
-            <p className="mt-sm">This site is under active development. More resources and tools coming soon.</p>
-          </div>
-        </footer>
+        <section className="section mb-x;">
+          <h1>
+            Updates will be posted here as they come.
+          </h1>
+        </section>
       </div>
     </>
   );

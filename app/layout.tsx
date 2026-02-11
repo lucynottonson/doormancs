@@ -1,7 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import BackgroundBlobs from './components/BackgroundBlobs'
-import Navbar from './components/Navbar';
+// import Navbar from './components/Navbar'; (take away slashes when finally deploy real site)
+// then add <Navbar /> in the body section of the return statement below, above {children}
 
 
 const inter = Inter({
@@ -18,7 +19,6 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body>
         <BackgroundBlobs />
-        <Navbar/>
         {children}
       </body>
     </html>
